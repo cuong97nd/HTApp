@@ -1,8 +1,7 @@
 import { merge } from 'lodash';
-import ReactApexChart from 'react-apexcharts';
 // material
 import { useTheme, experimentalStyled as styled } from '@material-ui/core/styles';
-import { Card, CardHeader } from '@material-ui/core';
+import { Box, Card, CardHeader } from '@material-ui/core';
 //
 import { BaseOptionChart } from '../../charts';
 
@@ -63,10 +62,14 @@ export default function AppCurrentSubject() {
 
   return (
     <Card>
-      <CardHeader title="Current Subject" />
-      <ChartWrapperStyle dir="ltr">
-        <ReactApexChart type="radar" series={CHART_DATA} options={chartOptions} height={340} />
-      </ChartWrapperStyle>
+      <CardHeader title="サリー先生のアドバイス" />
+      <Box height="400px">
+        <Box
+          component="img"
+          src="/static/illustrations/illustration_rocket.png"
+          sx={{ width: 170, position: 'absolute', bottom: 15, left: 50 }}
+        />
+      </Box>
     </Card>
   );
 }
