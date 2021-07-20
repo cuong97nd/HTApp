@@ -65,6 +65,18 @@ export default function AppCurrentSubject() {
       <CardHeader title="サリー先生のアドバイス" />
       <Box height="400px">
         <Box
+          boxShadow="rgba(0, 0, 0, 0.35) 0px 5px 15px"
+          margin="20px"
+          marginLeft="152px"
+          marginBottom="100px"
+          padding="40px"
+          borderRadius="14% 86% 13% 87% / 77% 12% 88% 23%"
+          fontSize="29px"
+          height="-webkit-fill-available"
+        >
+          こんにちは！お兄ちゃんは元気ですよ。
+        </Box>
+        <Box
           component="img"
           src="/static/illustrations/illustration_rocket.png"
           sx={{ width: 170, position: 'absolute', bottom: 15, left: 50 }}
