@@ -11,7 +11,7 @@ import alertTriangleFill from '@iconify/icons-eva/alert-triangle-fill';
 
 const getIcon = (name) => <Icon icon={name} width={22} height={22} />;
 
-const sidebarConfig = [
+/* const sidebarConfig = [
   {
     title: 'dashboard',
     path: '/dashboard/app',
@@ -31,6 +31,14 @@ const sidebarConfig = [
     title: 'Not found',
     path: '/404',
     icon: getIcon(alertTriangleFill)
+  }
+]; */
+
+const sidebarConfig = [
+  {
+    title: 'dashboard',
+    path: '/dashboard/app',
+    icon: getIcon(pieChart2Fill)
   }
 ];
 
