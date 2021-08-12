@@ -12,9 +12,10 @@ import {
 } from 'aws-amplify-react';
 import { Navigate, useRoutes, useNavigate } from 'react-router-dom';
 // material
-import { Box, Grid, Container, Typography } from '@material-ui/core';
+import { Fab, Box, Grid, Container, Typography } from '@material-ui/core';
 import { observer } from 'mobx-react';
 // components
+import AddIcon from '@material-ui/icons/Add';
 import Page from '../components/Page';
 import {
   AppTasks,
@@ -69,6 +70,16 @@ function DashboardApp() {
           </Grid>
         </Grid>
       </Container>
+      <Box position="fixed" right="50px" bottom="35px">
+        <Fab variant="extended" color="primary" size="large">
+          <AddIcon />
+          Add Food
+        </Fab>{' '}
+        <Fab variant="extended" color="secondary" size="large">
+          <AddIcon />
+          Add Motion
+        </Fab>
+      </Box>
     </Page>
   );
 }

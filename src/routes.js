@@ -6,6 +6,7 @@ import LogoOnlyLayout from './layouts/LogoOnlyLayout';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import DashboardApp from './pages/DashboardApp';
+import Profile from './pages/Profile';
 import Products from './pages/Products';
 import Blog from './pages/Blog';
 import User from './pages/User';
@@ -20,7 +21,8 @@ export default function Router() {
       element: <DashboardLayout />,
       children: [
         { path: '/', element: <Navigate to="/dashboard/app" replace /> },
-        { path: 'app', element: <DashboardApp myAuthS={myAuthS} /> }
+        { path: 'app', element: <DashboardApp myAuthS={myAuthS} /> },
+        { path: 'profile', element: <Profile /> }
       ]
     },
     {
