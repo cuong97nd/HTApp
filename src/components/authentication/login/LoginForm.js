@@ -1,10 +1,13 @@
 import * as Yup from 'yup';
 import { useState } from 'react';
+import { Auth } from 'aws-amplify';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { useFormik, Form, FormikProvider } from 'formik';
 import { Icon } from '@iconify/react';
 import eyeFill from '@iconify/icons-eva/eye-fill';
 import eyeOffFill from '@iconify/icons-eva/eye-off-fill';
+import { Authenticator, SignIn, SignUp, ConfirmSignUp, Greetings } from 'aws-amplify-react';
+
 // material
 import {
   Link,
@@ -16,6 +19,7 @@ import {
   FormControlLabel
 } from '@material-ui/core';
 import { LoadingButton } from '@material-ui/lab';
+import { myAuthS } from '../../../App';
 
 // ----------------------------------------------------------------------
 
@@ -24,7 +28,7 @@ export default function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
 
   const LoginSchema = Yup.object().shape({
-    email: Yup.string().email('Email must be a valid email address').required('Email is required'),
+    email: Yup.string().required('Username is required'),
     password: Yup.string().required('Password is required')
   });
 
@@ -35,8 +39,11 @@ export default function LoginForm() {
       remember: true
     },
     validationSchema: LoginSchema,
-    onSubmit: () => {
-      navigate('/dashboard', { replace: true });
+    onSubmit: (values, { setSubmitting }) => {
+      Auth.signIn(values.email, values.password).then(() => {
+        myAuthS.Auth = 'signIn';
+        navigate('/');
+      });
     }
   });
 
@@ -54,7 +61,7 @@ export default function LoginForm() {
             fullWidth
             autoComplete="username"
             type="email"
-            label="Email address"
+            label="Username"
             {...getFieldProps('email')}
             error={Boolean(touched.email && errors.email)}
             helperText={touched.email && errors.email}

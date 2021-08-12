@@ -1,4 +1,5 @@
 import { Link as RouterLink } from 'react-router-dom';
+import { useState } from 'react';
 // material
 import { experimentalStyled as styled } from '@material-ui/core/styles';
 import { Box, Card, Link, Container, Typography } from '@material-ui/core';
@@ -8,7 +9,9 @@ import AuthLayout from '../layouts/AuthLayout';
 import Page from '../components/Page';
 import { MHidden } from '../components/@material-extend';
 import { RegisterForm } from '../components/authentication/register';
+import ComfirmForm from '../components/authentication/register/confirmSignUp';
 import AuthSocial from '../components/authentication/AuthSocial';
+import { myAuthS } from '../App';
 
 // ----------------------------------------------------------------------
 
@@ -70,9 +73,11 @@ export default function Register() {
           </Box>
 
           <AuthSocial />
-
-          <RegisterForm />
-
+          {myAuthS.Auth === 'signUp' ? (
+            <ComfirmForm userName={myAuthS.userNameForSignUp} />
+          ) : (
+            <RegisterForm />
+          )}
           <Typography variant="body2" align="center" sx={{ color: 'text.secondary', mt: 3 }}>
             By registering, I agree to Minimal&nbsp;
             <Link underline="always" sx={{ color: 'text.primary' }}>

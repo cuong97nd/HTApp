@@ -10,7 +10,7 @@ import Products from './pages/Products';
 import Blog from './pages/Blog';
 import User from './pages/User';
 import NotFound from './pages/Page404';
-
+import { myAuthS } from './App';
 // ----------------------------------------------------------------------
 
 export default function Router() {
@@ -20,7 +20,7 @@ export default function Router() {
       element: <DashboardLayout />,
       children: [
         { path: '/', element: <Navigate to="/dashboard/app" replace /> },
-        { path: 'app', element: <DashboardApp /> }
+        { path: 'app', element: <DashboardApp myAuthS={myAuthS} /> }
       ]
     },
     {
