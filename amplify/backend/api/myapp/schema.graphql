@@ -1,3 +1,30 @@
+type MotionForReport @model @auth(rules: [{allow: private}]) @key(name: "byCustomer", fields: ["customerID"]) {
+  id: ID!
+  unit: String
+  customerID: ID
+  Motion: Motion @connection
+}
+
+type Motion @model @auth(rules: [{allow: private}]) {
+  id: ID!
+  name: String
+  calori: String
+}
+
+type FoodDeitalForReport @model @auth(rules: [{allow: private}]) @key(name: "byCustomer", fields: ["customerID"]) {
+  id: ID!
+  unit: String
+  customerID: ID
+  Food: Food @connection
+}
+
+type MaterialDeitalForFood @model @auth(rules: [{allow: private}]) @key(name: "byFood", fields: ["foodID"]) {
+  id: ID!
+  unit: String
+  foodID: ID
+  Material: Material @connection
+}
+
 type Customer @model {
   id: ID!
   name: String
@@ -8,13 +35,14 @@ type Customer @model {
   sex: String
   weight: String
   height: String
+  MotionForReports: [MotionForReport] @connection(keyName: "byCustomer", fields: ["id"])
+  FoodDeitalForReports: [FoodDeitalForReport] @connection(keyName: "byCustomer", fields: ["id"])
 }
 
 type Food @model {
   id: ID!
   name: String
-  weight: String
-  materials: [MaterialFood] @connection(keyName: "byFood", fields: ["id"])
+  MaterialDeitalForFoods: [MaterialDeitalForFood] @connection(keyName: "byFood", fields: ["id"])
 }
 
 type Material @model {
@@ -106,14 +134,5 @@ type Material @model {
   Glycin: String
   Prolin: String
   Serin: String
-  MaterialFoods: [MaterialFood] @connection(keyName: "byMaterial", fields: ["id"])
-}
-
-type MaterialFood @model(queries: null) @key(name: "byMaterial", fields: ["materialID", "foodID"]) @key(name: "byFood", fields: ["foodID", "materialID"]) @auth(rules: []) {
-  id: ID!
-  materialID: ID!
-  foodID: ID!
-  material: Material! @connection(fields: ["materialID"])
-  food: Food! @connection(fields: ["foodID"])
 }
  

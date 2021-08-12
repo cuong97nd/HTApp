@@ -4,7 +4,15 @@ import { ModelInit, MutableModel, PersistentModelConstructor } from "@aws-amplif
 
 
 
-type CustomerMetaData = {
+type MotionForReportMetaData = {
+  readOnlyFields: 'createdAt' | 'updatedAt';
+}
+
+type MotionMetaData = {
+  readOnlyFields: 'createdAt' | 'updatedAt';
+}
+
+type FoodDeitalForReportMetaData = {
   readOnlyFields: 'createdAt' | 'updatedAt';
 }
 
@@ -12,7 +20,7 @@ type FoodMetaData = {
   readOnlyFields: 'createdAt' | 'updatedAt';
 }
 
-type MaterialFoodMetaData = {
+type MaterialDeitalForFoodMetaData = {
   readOnlyFields: 'createdAt' | 'updatedAt';
 }
 
@@ -20,41 +28,61 @@ type MaterialMetaData = {
   readOnlyFields: 'createdAt' | 'updatedAt';
 }
 
-export declare class Customer {
+type CustomerMetaData = {
+  readOnlyFields: 'createdAt' | 'updatedAt';
+}
+
+export declare class MotionForReport {
   readonly id: string;
-  readonly name?: string;
-  readonly phoneNumber?: string;
-  readonly email?: string;
-  readonly age?: string;
-  readonly dateOfBirth?: string;
-  readonly sex?: string;
-  readonly weight?: string;
-  readonly height?: string;
+  readonly unit?: string;
+  readonly customerID?: string;
+  readonly Motion?: Motion;
   readonly createdAt?: string;
   readonly updatedAt?: string;
-  constructor(init: ModelInit<Customer, CustomerMetaData>);
-  static copyOf(source: Customer, mutator: (draft: MutableModel<Customer, CustomerMetaData>) => MutableModel<Customer, CustomerMetaData> | void): Customer;
+  constructor(init: ModelInit<MotionForReport, MotionForReportMetaData>);
+  static copyOf(source: MotionForReport, mutator: (draft: MutableModel<MotionForReport, MotionForReportMetaData>) => MutableModel<MotionForReport, MotionForReportMetaData> | void): MotionForReport;
+}
+
+export declare class Motion {
+  readonly id: string;
+  readonly name?: string;
+  readonly calori?: string;
+  readonly createdAt?: string;
+  readonly updatedAt?: string;
+  constructor(init: ModelInit<Motion, MotionMetaData>);
+  static copyOf(source: Motion, mutator: (draft: MutableModel<Motion, MotionMetaData>) => MutableModel<Motion, MotionMetaData> | void): Motion;
+}
+
+export declare class FoodDeitalForReport {
+  readonly id: string;
+  readonly unit?: string;
+  readonly customerID?: string;
+  readonly Food?: Food;
+  readonly createdAt?: string;
+  readonly updatedAt?: string;
+  constructor(init: ModelInit<FoodDeitalForReport, FoodDeitalForReportMetaData>);
+  static copyOf(source: FoodDeitalForReport, mutator: (draft: MutableModel<FoodDeitalForReport, FoodDeitalForReportMetaData>) => MutableModel<FoodDeitalForReport, FoodDeitalForReportMetaData> | void): FoodDeitalForReport;
 }
 
 export declare class Food {
   readonly id: string;
   readonly name?: string;
-  readonly weight?: string;
-  readonly materials?: (MaterialFood | null)[];
+  readonly MaterialDeitalForFoods?: (MaterialDeitalForFood | null)[];
   readonly createdAt?: string;
   readonly updatedAt?: string;
   constructor(init: ModelInit<Food, FoodMetaData>);
   static copyOf(source: Food, mutator: (draft: MutableModel<Food, FoodMetaData>) => MutableModel<Food, FoodMetaData> | void): Food;
 }
 
-export declare class MaterialFood {
+export declare class MaterialDeitalForFood {
   readonly id: string;
-  readonly material: Material;
-  readonly food: Food;
+  readonly unit?: string;
+  readonly foodID?: string;
+  readonly Material?: Material;
   readonly createdAt?: string;
   readonly updatedAt?: string;
-  constructor(init: ModelInit<MaterialFood, MaterialFoodMetaData>);
-  static copyOf(source: MaterialFood, mutator: (draft: MutableModel<MaterialFood, MaterialFoodMetaData>) => MutableModel<MaterialFood, MaterialFoodMetaData> | void): MaterialFood;
+  constructor(init: ModelInit<MaterialDeitalForFood, MaterialDeitalForFoodMetaData>);
+  static copyOf(source: MaterialDeitalForFood, mutator: (draft: MutableModel<MaterialDeitalForFood, MaterialDeitalForFoodMetaData>) => MutableModel<MaterialDeitalForFood, MaterialDeitalForFoodMetaData> | void): MaterialDeitalForFood;
 }
 
 export declare class Material {
@@ -146,9 +174,26 @@ export declare class Material {
   readonly Glycin?: string;
   readonly Prolin?: string;
   readonly Serin?: string;
-  readonly MaterialFoods?: (MaterialFood | null)[];
   readonly createdAt?: string;
   readonly updatedAt?: string;
   constructor(init: ModelInit<Material, MaterialMetaData>);
   static copyOf(source: Material, mutator: (draft: MutableModel<Material, MaterialMetaData>) => MutableModel<Material, MaterialMetaData> | void): Material;
+}
+
+export declare class Customer {
+  readonly id: string;
+  readonly name?: string;
+  readonly phoneNumber?: string;
+  readonly email?: string;
+  readonly age?: string;
+  readonly dateOfBirth?: string;
+  readonly sex?: string;
+  readonly weight?: string;
+  readonly height?: string;
+  readonly MotionForReports?: (MotionForReport | null)[];
+  readonly FoodDeitalForReports?: (FoodDeitalForReport | null)[];
+  readonly createdAt?: string;
+  readonly updatedAt?: string;
+  constructor(init: ModelInit<Customer, CustomerMetaData>);
+  static copyOf(source: Customer, mutator: (draft: MutableModel<Customer, CustomerMetaData>) => MutableModel<Customer, CustomerMetaData> | void): Customer;
 }

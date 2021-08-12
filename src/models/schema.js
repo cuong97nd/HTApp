@@ -1,7 +1,95 @@
 export const schema = {
     "models": {
-        "Customer": {
-            "name": "Customer",
+        "MotionForReport": {
+            "name": "MotionForReport",
+            "fields": {
+                "id": {
+                    "name": "id",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "unit": {
+                    "name": "unit",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "customerID": {
+                    "name": "customerID",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "Motion": {
+                    "name": "Motion",
+                    "isArray": false,
+                    "type": {
+                        "model": "Motion"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "association": {
+                        "connectionType": "BELONGS_TO",
+                        "targetName": "motionForReportMotionId"
+                    }
+                },
+                "createdAt": {
+                    "name": "createdAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                },
+                "updatedAt": {
+                    "name": "updatedAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                }
+            },
+            "syncable": true,
+            "pluralName": "MotionForReports",
+            "attributes": [
+                {
+                    "type": "model",
+                    "properties": {}
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "byCustomer",
+                        "fields": [
+                            "customerID"
+                        ]
+                    }
+                },
+                {
+                    "type": "auth",
+                    "properties": {
+                        "rules": [
+                            {
+                                "allow": "private",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        "Motion": {
+            "name": "Motion",
             "fields": {
                 "id": {
                     "name": "id",
@@ -17,50 +105,8 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
-                "phoneNumber": {
-                    "name": "phoneNumber",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "email": {
-                    "name": "email",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "age": {
-                    "name": "age",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "dateOfBirth": {
-                    "name": "dateOfBirth",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "sex": {
-                    "name": "sex",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "weight": {
-                    "name": "weight",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "height": {
-                    "name": "height",
+                "calori": {
+                    "name": "calori",
                     "isArray": false,
                     "type": "String",
                     "isRequired": false,
@@ -84,11 +130,115 @@ export const schema = {
                 }
             },
             "syncable": true,
-            "pluralName": "Customers",
+            "pluralName": "Motions",
             "attributes": [
                 {
                     "type": "model",
                     "properties": {}
+                },
+                {
+                    "type": "auth",
+                    "properties": {
+                        "rules": [
+                            {
+                                "allow": "private",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        "FoodDeitalForReport": {
+            "name": "FoodDeitalForReport",
+            "fields": {
+                "id": {
+                    "name": "id",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "unit": {
+                    "name": "unit",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "customerID": {
+                    "name": "customerID",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "Food": {
+                    "name": "Food",
+                    "isArray": false,
+                    "type": {
+                        "model": "Food"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "association": {
+                        "connectionType": "BELONGS_TO",
+                        "targetName": "foodDeitalForReportFoodId"
+                    }
+                },
+                "createdAt": {
+                    "name": "createdAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                },
+                "updatedAt": {
+                    "name": "updatedAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                }
+            },
+            "syncable": true,
+            "pluralName": "FoodDeitalForReports",
+            "attributes": [
+                {
+                    "type": "model",
+                    "properties": {}
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "byCustomer",
+                        "fields": [
+                            "customerID"
+                        ]
+                    }
+                },
+                {
+                    "type": "auth",
+                    "properties": {
+                        "rules": [
+                            {
+                                "allow": "private",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            }
+                        ]
+                    }
                 }
             ]
         },
@@ -109,25 +259,18 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
-                "weight": {
-                    "name": "weight",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "materials": {
-                    "name": "materials",
+                "MaterialDeitalForFoods": {
+                    "name": "MaterialDeitalForFoods",
                     "isArray": true,
                     "type": {
-                        "model": "MaterialFood"
+                        "model": "MaterialDeitalForFood"
                     },
                     "isRequired": false,
                     "attributes": [],
                     "isArrayNullable": true,
                     "association": {
                         "connectionType": "HAS_MANY",
-                        "associatedWith": "food"
+                        "associatedWith": "foodID"
                     }
                 },
                 "createdAt": {
@@ -156,8 +299,8 @@ export const schema = {
                 }
             ]
         },
-        "MaterialFood": {
-            "name": "MaterialFood",
+        "MaterialDeitalForFood": {
+            "name": "MaterialDeitalForFood",
             "fields": {
                 "id": {
                     "name": "id",
@@ -166,30 +309,31 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "material": {
-                    "name": "material",
+                "unit": {
+                    "name": "unit",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "foodID": {
+                    "name": "foodID",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "Material": {
+                    "name": "Material",
                     "isArray": false,
                     "type": {
                         "model": "Material"
                     },
-                    "isRequired": true,
+                    "isRequired": false,
                     "attributes": [],
                     "association": {
                         "connectionType": "BELONGS_TO",
-                        "targetName": "materialID"
-                    }
-                },
-                "food": {
-                    "name": "food",
-                    "isArray": false,
-                    "type": {
-                        "model": "Food"
-                    },
-                    "isRequired": true,
-                    "attributes": [],
-                    "association": {
-                        "connectionType": "BELONGS_TO",
-                        "targetName": "foodID"
+                        "targetName": "materialDeitalForFoodMaterialId"
                     }
                 },
                 "createdAt": {
@@ -210,38 +354,35 @@ export const schema = {
                 }
             },
             "syncable": true,
-            "pluralName": "MaterialFoods",
+            "pluralName": "MaterialDeitalForFoods",
             "attributes": [
                 {
                     "type": "model",
-                    "properties": {
-                        "queries": null
-                    }
-                },
-                {
-                    "type": "key",
-                    "properties": {
-                        "name": "byMaterial",
-                        "fields": [
-                            "materialID",
-                            "foodID"
-                        ]
-                    }
+                    "properties": {}
                 },
                 {
                     "type": "key",
                     "properties": {
                         "name": "byFood",
                         "fields": [
-                            "foodID",
-                            "materialID"
+                            "foodID"
                         ]
                     }
                 },
                 {
                     "type": "auth",
                     "properties": {
-                        "rules": []
+                        "rules": [
+                            {
+                                "allow": "private",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            }
+                        ]
                     }
                 }
             ]
@@ -865,20 +1006,6 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
-                "MaterialFoods": {
-                    "name": "MaterialFoods",
-                    "isArray": true,
-                    "type": {
-                        "model": "MaterialFood"
-                    },
-                    "isRequired": false,
-                    "attributes": [],
-                    "isArrayNullable": true,
-                    "association": {
-                        "connectionType": "HAS_MANY",
-                        "associatedWith": "material"
-                    }
-                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -904,9 +1031,129 @@ export const schema = {
                     "properties": {}
                 }
             ]
+        },
+        "Customer": {
+            "name": "Customer",
+            "fields": {
+                "id": {
+                    "name": "id",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "name": {
+                    "name": "name",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "phoneNumber": {
+                    "name": "phoneNumber",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "email": {
+                    "name": "email",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "age": {
+                    "name": "age",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "dateOfBirth": {
+                    "name": "dateOfBirth",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "sex": {
+                    "name": "sex",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "weight": {
+                    "name": "weight",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "height": {
+                    "name": "height",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "MotionForReports": {
+                    "name": "MotionForReports",
+                    "isArray": true,
+                    "type": {
+                        "model": "MotionForReport"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true,
+                    "association": {
+                        "connectionType": "HAS_MANY",
+                        "associatedWith": "customerID"
+                    }
+                },
+                "FoodDeitalForReports": {
+                    "name": "FoodDeitalForReports",
+                    "isArray": true,
+                    "type": {
+                        "model": "FoodDeitalForReport"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true,
+                    "association": {
+                        "connectionType": "HAS_MANY",
+                        "associatedWith": "customerID"
+                    }
+                },
+                "createdAt": {
+                    "name": "createdAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                },
+                "updatedAt": {
+                    "name": "updatedAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                }
+            },
+            "syncable": true,
+            "pluralName": "Customers",
+            "attributes": [
+                {
+                    "type": "model",
+                    "properties": {}
+                }
+            ]
         }
     },
     "enums": {},
     "nonModels": {},
-    "version": "e13491217e10397ade0b632d809974ae"
+    "version": "c65ee202209a33999430327bc562ded8"
 };

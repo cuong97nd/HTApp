@@ -26,7 +26,7 @@ Amplify.configure(awsconfig);
 // ----------------------------------------------------------------------
 const listener = (data) => {
   myAuthS.setAuthS(data.payload.event);
-  console.log('trang thai', data.payload.event);
+  console.log('trang thai ', data.payload.event);
 
   switch (data.payload.event) {
     case 'signIn':
