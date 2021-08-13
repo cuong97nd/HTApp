@@ -13,7 +13,7 @@ import {
   VerifyContact,
   withAuthenticator
 } from 'aws-amplify-react';
-import Amplify, { Auth, Hub } from 'aws-amplify';
+import Amplify, { Auth, Hub, API, graphqlOperation } from 'aws-amplify';
 // routes
 import Router from './routes';
 // theme
@@ -63,7 +63,18 @@ class AuthS {
 
   constructor() {
     const init = async () => {
-      await Auth.currentAuthenticatedUser();
+      const user = await Auth.currentAuthenticatedUser();
+      this.setAuthS('signInNoProfile');
+      const a = await API.graphql(
+        graphqlOperation(
+          `query MyQuery($id: ID) {
+            getCustomer(id: $id) {
+              id
+            }
+          }`,
+          { id: user.username }
+        )
+      );
       this.setAuthS('signIn');
     };
     init();

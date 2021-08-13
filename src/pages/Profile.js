@@ -1,13 +1,9 @@
 import * as Yup from 'yup';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Box from '@material-ui/core/Box';
-import { Auth } from 'aws-amplify';
+import Amplify, { Auth, Hub, API, graphqlOperation } from 'aws-amplify';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { useFormik, Form, FormikProvider } from 'formik';
-import { Icon } from '@iconify/react';
-import eyeFill from '@iconify/icons-eva/eye-fill';
-import eyeOffFill from '@iconify/icons-eva/eye-off-fill';
-import { Authenticator, SignIn, SignUp, ConfirmSignUp, Greetings } from 'aws-amplify-react';
 import { DatePicker } from 'react-rainbow-components';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
@@ -44,34 +40,60 @@ export default function Profile() {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
 
-  const LoginSchema = Yup.object().shape({
-    email: Yup.string().required('Username is required'),
-    password: Yup.string().required('Password is required')
-  });
+  const LoginSchema = Yup.object().shape({});
 
   const formik = useFormik({
     initialValues: {
       name: '',
-      wight: '',
+      weight: '',
       date: new Date(),
       sex: '',
       height: ''
     },
     validationSchema: LoginSchema,
     onSubmit: (values, { setSubmitting }) => {
-      Auth.signIn(values.email, values.password).then(() => {
-        myAuthS.Auth = 'signIn';
+      (async () => {
+        const user = await Auth.currentAuthenticatedUser();
+        const a = await API.graphql(
+          graphqlOperation(
+            `mutation MyMutation($id: ID, $weight: String, $height: String, $name: String, $date: String, $sex: String) {
+              createCustomer(input: {id: $id, weight: $weight, height: $height, name: $name, dateOfBirth: $date, sex: $sex}) {
+                id
+              }
+            }`,
+            { id: user.username, ...values }
+          )
+        );
         navigate('/');
-      });
+      })();
     }
   });
 
   const { errors, touched, values, isSubmitting, handleSubmit, getFieldProps, setFieldValue } =
     formik;
-  console.log(getFieldProps('date'));
   const handleShowPassword = () => {
     setShowPassword((show) => !show);
   };
+  useEffect(() => {
+    const init = async () => {
+      const user = await Auth.currentAuthenticatedUser();
+      const a = await API.graphql(
+        graphqlOperation(
+          `query MyQuery($id: ID) {
+            getCustomer(id: $id) {
+              name
+              weight
+              height
+              sex
+              dateOfBirth
+            }
+          }`,
+          { id: user.username }
+        )
+      );
+    };
+    init();
+  }, []);
 
   return (
     <Box display="flex" justifyContent="center">
@@ -89,9 +111,9 @@ export default function Profile() {
 
               <TextField
                 fullWidth
-                label="Wight"
+                label="Weight"
                 type="number"
-                {...getFieldProps('wight')}
+                {...getFieldProps('weight')}
                 error={Boolean(touched.email && errors.email)}
                 helperText={touched.email && errors.email}
               />

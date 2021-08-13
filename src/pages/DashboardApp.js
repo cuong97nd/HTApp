@@ -10,7 +10,7 @@ import {
   VerifyContact,
   withAuthenticator
 } from 'aws-amplify-react';
-import { Navigate, useRoutes, useNavigate } from 'react-router-dom';
+import { Navigate, useRoutes, useNavigate, Link as RouterLink } from 'react-router-dom';
 // material
 import { Fab, Box, Grid, Container, Typography } from '@material-ui/core';
 import { observer } from 'mobx-react';
@@ -32,6 +32,7 @@ import {
   AppConversionRates
 } from '../components/_dashboard/app';
 import { myAuthS } from '../App';
+import Profile from './Profile';
 
 // ----------------------------------------------------------------------
 const AuthStateApp = observer(({ myAuthS }) => {
@@ -42,6 +43,8 @@ const AuthStateApp = observer(({ myAuthS }) => {
       return <DashboardApp />;
     case 'signUp':
       return <Navigate to="/register" replace />;
+    case 'signInNoProfile':
+      return <Profile />;
     case 'signOut':
     case 'signIn_failure':
     case 'tokenRefresh':
@@ -71,11 +74,23 @@ function DashboardApp() {
         </Grid>
       </Container>
       <Box position="fixed" right="50px" bottom="35px">
-        <Fab variant="extended" color="primary" size="large">
+        <Fab
+          variant="extended"
+          color="primary"
+          size="large"
+          component={RouterLink}
+          to="/dashboard/add"
+        >
           <AddIcon />
           Add Food
         </Fab>{' '}
-        <Fab variant="extended" color="secondary" size="large">
+        <Fab
+          variant="extended"
+          color="secondary"
+          size="large"
+          component={RouterLink}
+          to="/dashboard/add"
+        >
           <AddIcon />
           Add Motion
         </Fab>

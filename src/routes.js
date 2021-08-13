@@ -8,6 +8,7 @@ import Register from './pages/Register';
 import DashboardApp from './pages/DashboardApp';
 import Profile from './pages/Profile';
 import Products from './pages/Products';
+import Add from './pages/Add';
 import Blog from './pages/Blog';
 import User from './pages/User';
 import NotFound from './pages/Page404';
@@ -22,7 +23,8 @@ export default function Router() {
       children: [
         { path: '/', element: <Navigate to="/dashboard/app" replace /> },
         { path: 'app', element: <DashboardApp myAuthS={myAuthS} /> },
-        { path: 'profile', element: <Profile /> }
+        { path: 'profile', element: <Profile /> },
+        { path: 'add', element: <Add /> }
       ]
     },
     {
