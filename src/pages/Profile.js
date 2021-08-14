@@ -18,7 +18,8 @@ import {
   TextField,
   IconButton,
   InputAdornment,
-  FormControlLabel
+  FormControlLabel,
+  Typography
 } from '@material-ui/core';
 import { LoadingButton } from '@material-ui/lab';
 import FormControl from '@material-ui/core/FormControl';
@@ -53,44 +54,94 @@ export default function Profile() {
     validationSchema: LoginSchema,
     onSubmit: (values, { setSubmitting }) => {
       (async () => {
-        const user = await Auth.currentAuthenticatedUser();
-        const a = await API.graphql(
-          graphqlOperation(
-            `mutation MyMutation($id: ID, $weight: String, $height: String, $name: String, $date: String, $sex: String) {
-              createCustomer(input: {id: $id, weight: $weight, height: $height, name: $name, dateOfBirth: $date, sex: $sex}) {
-                id
-              }
-            }`,
-            { id: user.username, ...values }
-          )
-        );
-        navigate('/');
+        try {
+          const user = await Auth.currentAuthenticatedUser();
+          const test = await API.graphql(
+            graphqlOperation(
+              `query MyQuery($email: String) {
+                listCustomers(filter: {email: {eq: $email}}) {
+                  items {
+                    id
+                    _version
+                  }
+                }
+              }`,
+              { email: user.attributes.email }
+            )
+          );
+          console.log('test', test.data.listCustomers.items);
+          if (test.data.listCustomers.items.length !== 0) {
+            const a = await API.graphql(
+              graphqlOperation(
+                `mutation MyMutation($date: String, $height: String, $id: ID!, $sex: String, $weight: String, $name: String , $_version: Int ) {
+                  updateCustomer(input: {id: $id, weight: $weight, height: $height, dateOfBirth: $date, sex: $sex, name: $name, _version :$_version}) {
+                    id
+                  }
+                }
+                `,
+                { ...test.data.listCustomers.items[0], ...values }
+              )
+            );
+            console.log(a);
+          } else {
+            await API.graphql(
+              graphqlOperation(
+                `mutation MyMutation( $weight: String, $height: String, $name: String, $date: String, $sex: String , $email: String) {
+                  createCustomer(input: {weight: $weight, height: $height, name: $name, dateOfBirth: $date, sex: $sex, email: $email}) {
+                    id
+                  }
+                }`,
+                { email: user.attributes.email, ...values }
+              )
+            );
+          }
+          navigate('/');
+        } catch (error) {
+          console.log(error);
+          setSubmitting(false);
+        }
       })();
     }
   });
 
-  const { errors, touched, values, isSubmitting, handleSubmit, getFieldProps, setFieldValue } =
-    formik;
+  const {
+    errors,
+    touched,
+    values,
+    isSubmitting,
+    handleSubmit,
+    getFieldProps,
+    setFieldValue,
+    setValues
+  } = formik;
   const handleShowPassword = () => {
     setShowPassword((show) => !show);
   };
   useEffect(() => {
     const init = async () => {
       const user = await Auth.currentAuthenticatedUser();
+      console.log(user);
       const a = await API.graphql(
         graphqlOperation(
-          `query MyQuery($id: ID) {
-            getCustomer(id: $id) {
-              name
-              weight
-              height
-              sex
-              dateOfBirth
+          `query MyQuery($email: String) {
+            listCustomers(filter: {email: {eq: $email}}) {
+              items {
+                name
+                height
+                weight
+                sex
+                dateOfBirth
+              }
             }
           }`,
-          { id: user.username }
+          { email: user.attributes.email }
         )
       );
+      if (a.data.listCustomers.items.length !== 0) {
+        a.data.listCustomers.items[0].date = a.data.listCustomers.items[0].dateOfBirth;
+        console.log('ojsaidjia', a.data.listCustomers.items);
+        await setValues(a.data.listCustomers.items[0]);
+      }
     };
     init();
   }, []);
@@ -98,6 +149,10 @@ export default function Profile() {
   return (
     <Box display="flex" justifyContent="center">
       <Box maxWidth="500px" width="100%">
+        <Typography variant="h2" sx={{ mt: 3, textAlign: 'center' }}>
+          Profile
+        </Typography>
+
         <FormikProvider value={formik}>
           <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
             <Stack spacing={3} sx={{ my: 2 }}>

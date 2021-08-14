@@ -1,5 +1,5 @@
-import React from 'react';
-import { Hub, Logger, Auth } from 'aws-amplify';
+import React, { useEffect } from 'react';
+import { Hub, Logger, Auth, API, graphqlOperation } from 'aws-amplify';
 import {
   ConfirmSignIn,
   ConfirmSignUp,
@@ -36,15 +36,11 @@ import Profile from './Profile';
 
 // ----------------------------------------------------------------------
 const AuthStateApp = observer(({ myAuthS }) => {
-  const navigate = useNavigate();
-
   switch (myAuthS.Auth) {
     case 'signIn':
       return <DashboardApp />;
     case 'signUp':
       return <Navigate to="/register" replace />;
-    case 'signInNoProfile':
-      return <Profile />;
     case 'signOut':
     case 'signIn_failure':
     case 'tokenRefresh':
@@ -56,6 +52,33 @@ const AuthStateApp = observer(({ myAuthS }) => {
 });
 
 function DashboardApp() {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    (async () => {
+      console.log('DashboardApp', 'da bi goi');
+      const user = await Auth.currentAuthenticatedUser();
+      try {
+        const test = await API.graphql(
+          graphqlOperation(
+            `query MyQuery($email: String) {
+              listCustomers(filter: {email: {eq: $email}}) {
+                items {
+                  name
+                }
+              }
+            }`,
+            { email: user.attributes.email }
+          )
+        );
+        if (test.data.listCustomers.items.length === 0) {
+          navigate('/dashboard/profile');
+        }
+      } catch (error) {
+        navigate('/dashboard/profile');
+      }
+    })();
+  }, []);
   return (
     <Page title="Dashboard | Minimal-UI">
       <Container maxWidth="xl">
@@ -79,7 +102,7 @@ function DashboardApp() {
           color="primary"
           size="large"
           component={RouterLink}
-          to="/dashboard/add"
+          to="/dashboard/addFood"
         >
           <AddIcon />
           Add Food
@@ -89,7 +112,7 @@ function DashboardApp() {
           color="secondary"
           size="large"
           component={RouterLink}
-          to="/dashboard/add"
+          to="/dashboard/addMotion"
         >
           <AddIcon />
           Add Motion

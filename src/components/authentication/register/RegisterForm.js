@@ -1,5 +1,5 @@
 import * as Yup from 'yup';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Auth } from 'aws-amplify';
 import { Icon } from '@iconify/react';
 import { useFormik, Form, FormikProvider } from 'formik';
@@ -55,6 +55,14 @@ export default function RegisterForm() {
   });
 
   const { errors, touched, handleSubmit, isSubmitting, getFieldProps } = formik;
+
+  useEffect(() => {
+    (async () => {
+      const user = await Auth.currentAuthenticatedUser();
+      myAuthS.Auth = 'signIn';
+      navigate('/');
+    })();
+  }, []);
 
   return (
     <FormikProvider value={formik}>

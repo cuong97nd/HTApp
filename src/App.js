@@ -25,7 +25,6 @@ import awsconfig from './aws-exports';
 Amplify.configure(awsconfig);
 // ----------------------------------------------------------------------
 const listener = (data) => {
-  myAuthS.setAuthS(data.payload.event);
   console.log('trang thai ', data.payload.event);
 
   switch (data.payload.event) {
@@ -62,22 +61,6 @@ class AuthS {
   userNameForSignUp = '';
 
   constructor() {
-    const init = async () => {
-      const user = await Auth.currentAuthenticatedUser();
-      this.setAuthS('signInNoProfile');
-      const a = await API.graphql(
-        graphqlOperation(
-          `query MyQuery($id: ID) {
-            getCustomer(id: $id) {
-              id
-            }
-          }`,
-          { id: user.username }
-        )
-      );
-      this.setAuthS('signIn');
-    };
-    init();
     makeAutoObservable(this);
   }
 

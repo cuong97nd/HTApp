@@ -1,18 +1,15 @@
 import { Navigate, useRoutes } from 'react-router-dom';
+import { myAuthS } from './App';
 // layouts
 import DashboardLayout from './layouts/dashboard';
 import LogoOnlyLayout from './layouts/LogoOnlyLayout';
+import Add from './pages/Add';
+import DashboardApp from './pages/DashboardApp';
 //
 import Login from './pages/Login';
-import Register from './pages/Register';
-import DashboardApp from './pages/DashboardApp';
-import Profile from './pages/Profile';
-import Products from './pages/Products';
-import Add from './pages/Add';
-import Blog from './pages/Blog';
-import User from './pages/User';
 import NotFound from './pages/Page404';
-import { myAuthS } from './App';
+import Profile from './pages/Profile';
+import Register from './pages/Register';
 // ----------------------------------------------------------------------
 
 export default function Router() {
@@ -24,7 +21,8 @@ export default function Router() {
         { path: '/', element: <Navigate to="/dashboard/app" replace /> },
         { path: 'app', element: <DashboardApp myAuthS={myAuthS} /> },
         { path: 'profile', element: <Profile /> },
-        { path: 'add', element: <Add /> }
+        { path: 'addFood', element: <Add type="Food" /> },
+        { path: 'addMotion', element: <Add type="Motion" /> }
       ]
     },
     {

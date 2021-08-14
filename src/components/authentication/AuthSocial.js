@@ -18,13 +18,21 @@ export default function AuthSocial() {
           color="inherit"
           variant="outlined"
           onClick={() => {
-            Auth.federatedSignIn();
+            Auth.federatedSignIn({ provider: 'Google' });
           }}
         >
           <Icon icon={googleFill} color="#DF3E30" height={24} />
         </Button>
 
-        <Button fullWidth size="large" color="inherit" variant="outlined">
+        <Button
+          fullWidth
+          size="large"
+          color="inherit"
+          variant="outlined"
+          onClick={() => {
+            Auth.federatedSignIn({ provider: 'Facebook' });
+          }}
+        >
           <Icon icon={facebookFill} color="#1877F2" height={24} />
         </Button>
       </Stack>

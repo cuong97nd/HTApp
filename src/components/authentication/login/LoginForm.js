@@ -1,6 +1,6 @@
 import * as Yup from 'yup';
-import { useState } from 'react';
-import { Auth } from 'aws-amplify';
+import { useEffect, useState } from 'react';
+import { Auth, Hub } from 'aws-amplify';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { useFormik, Form, FormikProvider } from 'formik';
 import { Icon } from '@iconify/react';
@@ -52,6 +52,24 @@ export default function LoginForm() {
   const handleShowPassword = () => {
     setShowPassword((show) => !show);
   };
+
+  useEffect(() => {
+    Hub.listen('auth', ({ payload: { event, data } }) => {
+      switch (event) {
+        case 'signIn':
+          myAuthS.Auth = 'signIn';
+          navigate('/');
+          break;
+        default:
+      }
+    });
+
+    (async () => {
+      const user = await Auth.currentAuthenticatedUser();
+      myAuthS.Auth = 'signIn';
+      navigate('/');
+    })();
+  }, []);
 
   return (
     <FormikProvider value={formik}>

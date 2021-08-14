@@ -45,12 +45,7 @@ const ContentStyle = styled('div')(({ theme }) => ({
 export default function Register() {
   return (
     <RootStyle title="Register | Minimal-UI">
-      <AuthLayout>
-        Already have an account? &nbsp;
-        <Link underline="none" variant="subtitle2" component={RouterLink} to="/login">
-          Login
-        </Link>
-      </AuthLayout>
+      <AuthLayout />
 
       <MHidden width="mdDown">
         <SectionStyle>
@@ -69,6 +64,12 @@ export default function Register() {
             </Typography>
             <Typography sx={{ color: 'text.secondary' }}>
               Free forever. No credit card needed.
+            </Typography>
+            <Typography>
+              Already have an account?&nbsp;
+              <Link to="/login" component={RouterLink}>
+                Login
+              </Link>
             </Typography>
           </Box>
 
@@ -89,15 +90,6 @@ export default function Register() {
             </Link>
             .
           </Typography>
-
-          <MHidden width="smUp">
-            <Typography variant="subtitle2" sx={{ mt: 3, textAlign: 'center' }}>
-              Already have an account?&nbsp;
-              <Link to="/login" component={RouterLink}>
-                Login
-              </Link>
-            </Typography>
-          </MHidden>
         </ContentStyle>
       </Container>
     </RootStyle>

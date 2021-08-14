@@ -28,7 +28,7 @@ export default function ComfirmForm({ userName }) {
     validationSchema: RegisterSchema,
     onSubmit: (values, { setSubmitting }) => {
       Auth.confirmSignUp(values.firstName, values.password).then(() => {
-        myAuthS.Auth = 'signIn';
+        myAuthS.Auth = '';
         myAuthS.userNameForSignUp = '';
         navigate('/', { replace: true });
       });

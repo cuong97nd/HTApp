@@ -1,24 +1,33 @@
-type MotionForReport @model @auth(rules: [{allow: private}]) @key(name: "byCustomer", fields: ["customerID"]) {
+type MotionForReport
+  @model
+  @auth(rules: [{ allow: private }])
+  @key(name: "byCustomer", fields: ["customerID"]) {
   id: ID!
   unit: String
   customerID: ID
   Motion: Motion @connection
 }
 
-type Motion @model @auth(rules: [{allow: private}]) {
+type Motion @model @auth(rules: [{ allow: private }]) {
   id: ID!
   name: String
   calori: String
 }
 
-type FoodDeitalForReport @model @auth(rules: [{allow: private}]) @key(name: "byCustomer", fields: ["customerID"]) {
+type FoodDeitalForReport
+  @model
+  @auth(rules: [{ allow: private }])
+  @key(name: "byCustomer", fields: ["customerID"]) {
   id: ID!
   unit: String
   customerID: ID
   Food: Food @connection
 }
 
-type MaterialDeitalForFood @model @auth(rules: [{allow: private}]) @key(name: "byFood", fields: ["foodID"]) {
+type MaterialDeitalForFood
+  @model
+  @auth(rules: [{ allow: private }])
+  @key(name: "byFood", fields: ["foodID"]) {
   id: ID!
   unit: String
   foodID: ID
@@ -42,6 +51,93 @@ type Customer @model {
 type Food @model {
   id: ID!
   name: String
+  Water: String
+  Energy: String
+  Energy2: String
+  Protein: String
+  Lipid: String
+  Carbohydrate: String
+  Celluloza: String
+  Ash: String
+  Sugar: String
+  Galactose: String
+  Maltose: String
+  Lactose: String
+  Fructose: String
+  Glucose: String
+  Sucrose: String
+  Calcium: String
+  Iron: String
+  Magnesium: String
+  Manganese: String
+  Phosphorous: String
+  Potassium: String
+  Sodium: String
+  Zinc: String
+  Copper: String
+  Selenium: String
+  VitaminC: String
+  VitaminB1: String
+  VitaminB2: String
+  VitaminPP: String
+  VitaminB5: String
+  VitaminB6: String
+  Folate: String
+  VitaminB9: String
+  VitaminH: String
+  VitaminB12: String
+  VitaminA: String
+  VitamnD: String
+  VitaminE: String
+  VitaminK: String
+  BetaCaroten: String
+  AlphaCaroten: String
+  BetaCryptoxanthin: String
+  Lycopen: String
+  LuteinZeaxanthin: String
+  Purin: String
+  TotalIsoflavone: String
+  Daidzein: String
+  Genistein: String
+  Glycetin: String
+  TotalSaturatedFattyAcid: String
+  Palmitic: String
+  Margaric: String
+  Stearic: String
+  Arachidic: String
+  Behenic: String
+  Lignoceric: String
+  TotalMonounsaturatedFattyAcid: String
+  Myristoleic: String
+  Palmitoleic: String
+  Oleic: String
+  TotalPolyunsaturatedFattyAcid: String
+  Linoleic: String
+  Linolenic: String
+  Arachidonic: String
+  Eicosapentaenoic: String
+  Docosahexaenoic: String
+  TotalTransFattyAcid: String
+  Cholesterol: String
+  Phytosterol: String
+  Lysin: String
+  Methionin: String
+  Tryptophan: String
+  Phenylalanin: String
+  Threonin: String
+  Valin: String
+  Leucin: String
+  Isoleucin: String
+  Arginin: String
+  Histidin: String
+  Cystin: String
+  Tyrosin: String
+  Alanin: String
+  AcidAspartic: String
+  AcidGlutamic: String
+  Glycin: String
+  Prolin: String
+  Serin: String
   MaterialDeitalForFoods: [MaterialDeitalForFood] @connection(keyName: "byFood", fields: ["id"])
 }
 
@@ -135,4 +231,3 @@ type Material @model {
   Prolin: String
   Serin: String
 }
- 
