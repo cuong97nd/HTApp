@@ -52,9 +52,10 @@ export default function AppConversionRates() {
     const dateString = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
     (async () => {
       const user = await Auth.currentAuthenticatedUser();
-      const a = await API.graphql(
-        graphqlOperation(
-          `query MyQuery($creatDate: String = "", $email: String = "") {
+      try {
+        const a = await API.graphql(
+          graphqlOperation(
+            `query MyQuery($creatDate: String = "", $email: String = "") {
             listCustomers(filter: {email: {eq: $email}}) {
               items {
                 FoodDeitalForReports(filter: {creatDate: {eq: $creatDate}}) {
@@ -82,62 +83,65 @@ export default function AppConversionRates() {
             }
           }          
           `,
-          {
-            creatDate: dateString,
-            email: user.attributes.email
-          }
-        )
-      );
-      try {
-        console.log(a);
-        a.data.listFoodDeitalForReports = a.data.listCustomers.items[0].FoodDeitalForReports;
-        delete a.data.listCustomers;
-
-        // xoa null trong data
-        a.data.listFoodDeitalForReports.items = a.data.listFoodDeitalForReports.items.filter(
-          (x) => x.Food !== null
+            {
+              creatDate: dateString,
+              email: user.attributes.email
+            }
+          )
         );
+        try {
+          console.log(a);
+          a.data.listFoodDeitalForReports = a.data.listCustomers.items[0].FoodDeitalForReports;
+          delete a.data.listCustomers;
 
-        // Tinh data
-        Object.keys(a.data.listFoodDeitalForReports.items[0].Food).forEach((key) => {
-          a.data.listFoodDeitalForReports.items[0].Food[key] =
-            parseInt(a.data.listFoodDeitalForReports.items[0].Food[key], 10) *
-            (parseInt(a.data.listFoodDeitalForReports.items[0].unit, 10) / 100);
-          if (Number.isNaN(a.data.listFoodDeitalForReports.items[0].Food[key]))
-            a.data.listFoodDeitalForReports.items[0].Food[key] = 0;
-        });
+          // xoa null trong data
+          a.data.listFoodDeitalForReports.items = a.data.listFoodDeitalForReports.items.filter(
+            (x) => x.Food !== null
+          );
 
-        const data = a.data.listFoodDeitalForReports.items.reduce((a, b) => {
-          Object.keys(a.Food).forEach((key) => {
-            const tmp = parseInt(b.Food[key], 10) * (parseInt(b.unit, 10) / 100);
-            if (Number.isNaN(tmp)) a.Food[key] += tmp;
+          // Tinh data
+          Object.keys(a.data.listFoodDeitalForReports.items[0].Food).forEach((key) => {
+            a.data.listFoodDeitalForReports.items[0].Food[key] =
+              parseInt(a.data.listFoodDeitalForReports.items[0].Food[key], 10) *
+              (parseInt(a.data.listFoodDeitalForReports.items[0].unit, 10) / 100);
+            if (Number.isNaN(a.data.listFoodDeitalForReports.items[0].Food[key]))
+              a.data.listFoodDeitalForReports.items[0].Food[key] = 0;
           });
-          return a;
-        }).Food;
 
-        const series = [
-          {
-            name: 'Actual',
-            data: []
-          }
-        ];
+          const data = a.data.listFoodDeitalForReports.items.reduce((a, b) => {
+            Object.keys(a.Food).forEach((key) => {
+              const tmp = parseInt(b.Food[key], 10) * (parseInt(b.unit, 10) / 100);
+              if (Number.isNaN(tmp)) a.Food[key] += tmp;
+            });
+            return a;
+          }).Food;
 
-        Object.keys(data).forEach((key) => {
-          series[0].data.push({
-            x: key,
-            y: data[key],
-            goals: [
-              {
-                name: 'Expected',
-                value: 0,
-                strokeWidth: 5,
-                strokeColor: '#775DD0'
-              }
-            ]
+          const series = [
+            {
+              name: 'Actual',
+              data: []
+            }
+          ];
+
+          Object.keys(data).forEach((key) => {
+            series[0].data.push({
+              x: key,
+              y: data[key],
+              goals: [
+                {
+                  name: 'Expected',
+                  value: 0,
+                  strokeWidth: 5,
+                  strokeColor: '#775DD0'
+                }
+              ]
+            });
           });
-        });
 
-        setSeries(series);
+          setSeries(series);
+        } catch (error) {
+          console.log(error);
+        }
       } catch (error) {
         console.log(error);
       }

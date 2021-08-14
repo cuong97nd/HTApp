@@ -1,29 +1,18 @@
-import * as Yup from 'yup';
-import { useState, useEffect } from 'react';
+// material
+import { Stack, TextField, Typography } from '@material-ui/core';
 import Box from '@material-ui/core/Box';
-import Amplify, { Auth, Hub, API, graphqlOperation } from 'aws-amplify';
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
-import { useFormik, Form, FormikProvider } from 'formik';
-import { DatePicker } from 'react-rainbow-components';
+import FormControl from '@material-ui/core/FormControl';
+import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
-import { makeStyles } from '@material-ui/styles';
-import InputLabel from '@material-ui/core/InputLabel';
-
-// material
-import {
-  Link,
-  Stack,
-  Checkbox,
-  TextField,
-  IconButton,
-  InputAdornment,
-  FormControlLabel,
-  Typography
-} from '@material-ui/core';
 import { LoadingButton } from '@material-ui/lab';
-import FormControl from '@material-ui/core/FormControl';
-import { myAuthS } from '../App';
+import { makeStyles } from '@material-ui/styles';
+import { API, Auth, graphqlOperation } from 'aws-amplify';
+import { Form, FormikProvider, useFormik } from 'formik';
+import { useEffect, useState } from 'react';
+import { DatePicker } from 'react-rainbow-components';
+import { useNavigate } from 'react-router-dom';
+import * as Yup from 'yup';
 
 // ----------------------------------------------------------------------
 const useStyles = makeStyles((theme) => ({
@@ -121,9 +110,10 @@ export default function Profile() {
     const init = async () => {
       const user = await Auth.currentAuthenticatedUser();
       console.log(user);
-      const a = await API.graphql(
-        graphqlOperation(
-          `query MyQuery($email: String) {
+      try {
+        const a = await API.graphql(
+          graphqlOperation(
+            `query MyQuery($email: String) {
             listCustomers(filter: {email: {eq: $email}}) {
               items {
                 name
@@ -134,15 +124,19 @@ export default function Profile() {
               }
             }
           }`,
-          { email: user.attributes.email }
-        )
-      );
-      if (a.data.listCustomers.items.length !== 0) {
-        a.data.listCustomers.items[0].date = a.data.listCustomers.items[0].dateOfBirth;
-        console.log('ojsaidjia', a.data.listCustomers.items);
-        await setValues(a.data.listCustomers.items[0]);
+            { email: user.attributes.email }
+          )
+        );
+        if (a.data.listCustomers.items.length !== 0) {
+          a.data.listCustomers.items[0].date = a.data.listCustomers.items[0].dateOfBirth;
+          console.log('ojsaidjia', a.data.listCustomers.items);
+          await setValues(a.data.listCustomers.items[0]);
+        }
+      } catch (error) {
+        console.log(error);
       }
     };
+
     init();
   }, []);
 

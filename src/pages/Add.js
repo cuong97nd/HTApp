@@ -4,12 +4,11 @@ import Box from '@material-ui/core/Box';
 import { LoadingButton } from '@material-ui/lab';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { makeStyles } from '@material-ui/styles';
-import Amplify, { Auth, Hub, API, graphqlOperation } from 'aws-amplify';
+import { API, Auth, graphqlOperation } from 'aws-amplify';
 import { Form, FormikProvider, useFormik } from 'formik';
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
-import { myAuthS } from '../App';
 
 // ----------------------------------------------------------------------
 const useStyles = makeStyles((theme) => ({
@@ -39,86 +38,90 @@ export default function Add({ type }) {
     },
     validationSchema: LoginSchema,
     onSubmit: (values, { setSubmitting }) => {
-      const date = new Date();
-      const dateString = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
-      const sentFood = async () => {
-        const user = await Auth.currentAuthenticatedUser();
-        const test = await API.graphql(
-          graphqlOperation(
-            `query MyQuery($email: String) {
+      try {
+        const date = new Date();
+        const dateString = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
+        const sentFood = async () => {
+          const user = await Auth.currentAuthenticatedUser();
+          const test = await API.graphql(
+            graphqlOperation(
+              `query MyQuery($email: String) {
               listCustomers(filter: {email: {eq: $email}}) {
                 items {
                   id
                 }
               }
             }`,
-            { email: user.attributes.email }
-          )
-        );
-        console.log('userID', test.data.listCustomers.items[0].id);
-        console.log('FoodID', values);
+              { email: user.attributes.email }
+            )
+          );
+          console.log('userID', test.data.listCustomers.items[0].id);
+          console.log('FoodID', values);
 
-        await API.graphql(
-          graphqlOperation(
-            `mutation MyMutation($foodDeitalForReportFoodId: ID, $customerID: ID, $unit: String , $creatDate :String) {
+          await API.graphql(
+            graphqlOperation(
+              `mutation MyMutation($foodDeitalForReportFoodId: ID, $customerID: ID, $unit: String , $creatDate :String) {
               createFoodDeitalForReport(input: {foodDeitalForReportFoodId: $foodDeitalForReportFoodId, customerID: $customerID, unit: $unit , creatDate : $creatDate}) {
                 id
               }
             }            
             `,
-            {
-              foodDeitalForReportFoodId: values.select.id,
-              customerID: test.data.listCustomers.items[0].id,
-              unit: values.unit.toString(),
-              creatDate: dateString
-            }
-          )
-        );
-        setSubmitting(false);
-        setValues(initialValues);
-      };
+              {
+                foodDeitalForReportFoodId: values.select.id,
+                customerID: test.data.listCustomers.items[0].id,
+                unit: values.unit.toString(),
+                creatDate: dateString
+              }
+            )
+          );
+          setSubmitting(false);
+          setValues(initialValues);
+        };
 
-      const sentMotion = async () => {
-        const user = await Auth.currentAuthenticatedUser();
-        const test = await API.graphql(
-          graphqlOperation(
-            `query MyQuery($email: String) {
+        const sentMotion = async () => {
+          const user = await Auth.currentAuthenticatedUser();
+          const test = await API.graphql(
+            graphqlOperation(
+              `query MyQuery($email: String) {
               listCustomers(filter: {email: {eq: $email}}) {
                 items {
                   id
                 }
               }
             }`,
-            { email: user.attributes.email }
-          )
-        );
-        console.log('userID', test.data.listCustomers.items[0].id);
-        console.log('FoodID', values);
+              { email: user.attributes.email }
+            )
+          );
+          console.log('userID', test.data.listCustomers.items[0].id);
+          console.log('FoodID', values);
 
-        await API.graphql(
-          graphqlOperation(
-            `mutation MyMutation($motionForReportMotionId: ID, $customerID: ID, $unit: String , $creatDate :String) {
+          await API.graphql(
+            graphqlOperation(
+              `mutation MyMutation($motionForReportMotionId: ID, $customerID: ID, $unit: String , $creatDate :String) {
               createMotionForReport(input: {motionForReportMotionId: $motionForReportMotionId, customerID: $customerID, unit: $unit , creatDate : $creatDate}) {
                 id
               }
             }            
             `,
-            {
-              motionForReportMotionId: values.select.id,
-              customerID: test.data.listCustomers.items[0].id,
-              unit: values.unit.toString(),
-              creatDate: dateString
-            }
-          )
-        );
-        setSubmitting(false);
-        setValues(initialValues);
-      };
+              {
+                motionForReportMotionId: values.select.id,
+                customerID: test.data.listCustomers.items[0].id,
+                unit: values.unit.toString(),
+                creatDate: dateString
+              }
+            )
+          );
+          setSubmitting(false);
+          setValues(initialValues);
+        };
 
-      if (type === 'Food') {
-        sentFood();
-      } else {
-        sentMotion();
+        if (type === 'Food') {
+          sentFood();
+        } else {
+          sentMotion();
+        }
+      } catch (error) {
+        console.log(error);
       }
     }
   });
@@ -127,10 +130,11 @@ export default function Add({ type }) {
     formik;
 
   useEffect(() => {
-    const initFood = async () => {
-      const a = await API.graphql(
-        graphqlOperation(
-          `query MyQuery {
+    try {
+      const initFood = async () => {
+        const a = await API.graphql(
+          graphqlOperation(
+            `query MyQuery {
             listFoods {
               items {
                 id
@@ -139,15 +143,15 @@ export default function Add({ type }) {
             }
           }
           `
-        )
-      );
-      setSelectArray(a.data.listFoods.items);
-    };
+          )
+        );
+        setSelectArray(a.data.listFoods.items);
+      };
 
-    const initMotion = async () => {
-      const a = await API.graphql(
-        graphqlOperation(
-          `query MyQuery {
+      const initMotion = async () => {
+        const a = await API.graphql(
+          graphqlOperation(
+            `query MyQuery {
             listMotions {
               items {
                 id
@@ -156,15 +160,18 @@ export default function Add({ type }) {
             }
           }          
           `
-        )
-      );
-      setSelectArray(a.data.listMotions.items);
-    };
+          )
+        );
+        setSelectArray(a.data.listMotions.items);
+      };
 
-    if (type === 'Food') {
-      initFood();
-    } else {
-      initMotion();
+      if (type === 'Food') {
+        initFood();
+      } else {
+        initMotion();
+      }
+    } catch (error) {
+      console.log(error);
     }
   }, []);
 
