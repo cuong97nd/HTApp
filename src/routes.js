@@ -4,6 +4,8 @@ import { myAuthS } from './App';
 import DashboardLayout from './layouts/dashboard';
 import LogoOnlyLayout from './layouts/LogoOnlyLayout';
 import Add from './pages/Add';
+import AddPage from './pages/AddPage';
+
 import DashboardApp from './pages/DashboardApp';
 //
 import Login from './pages/Login';
@@ -21,8 +23,7 @@ export default function Router() {
         { path: '/', element: <Navigate to="/dashboard/app" replace /> },
         { path: 'app', element: <DashboardApp myAuthS={myAuthS} /> },
         { path: 'profile', element: <Profile /> },
-        { path: 'addFood', element: <Add type="Food" /> },
-        { path: 'addMotion', element: <Add type="Motion" /> }
+        { path: 'add', element: <AddPage /> }
       ]
     },
     {

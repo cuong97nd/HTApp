@@ -7,7 +7,7 @@ import eyeFill from '@iconify/icons-eva/eye-fill';
 import eyeOffFill from '@iconify/icons-eva/eye-off-fill';
 import { useNavigate } from 'react-router-dom';
 // material
-import { Stack, TextField, IconButton, InputAdornment } from '@material-ui/core';
+import { Box, Stack, TextField, IconButton, InputAdornment } from '@material-ui/core';
 import { LoadingButton } from '@material-ui/lab';
 import { myAuthS } from '../../../App';
 
@@ -16,6 +16,7 @@ import { myAuthS } from '../../../App';
 export default function RegisterForm() {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
+  const [err, setErr] = useState('');
 
   const RegisterSchema = Yup.object().shape({
     firstName: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Username required'),
@@ -40,17 +41,17 @@ export default function RegisterForm() {
         attributes: {
           email: values.email // optional
         }
-      }).then(({ user }) => {
-        console.log(user);
-        myAuthS.Auth = 'signUp';
-        myAuthS.userNameForSignUp = user.username;
-        navigate('/', { replace: true });
-      });
-      /*
-      Auth.signIn(values.email, values.password).then(() => {
-        myAuthS.Auth = 'signIn';
-      });
-      */
+      })
+        .then(({ user }) => {
+          console.log(user);
+          myAuthS.Auth = 'signUp';
+          myAuthS.userNameForSignUp = user.username;
+          navigate('/', { replace: true });
+        })
+        .catch((e) => {
+          setErr(e.message);
+          setSubmitting(false);
+        });
     }
   });
 
@@ -80,7 +81,6 @@ export default function RegisterForm() {
 
           <TextField
             fullWidth
-            autoComplete="username"
             type="email"
             label="Email address"
             {...getFieldProps('email')}
@@ -90,7 +90,6 @@ export default function RegisterForm() {
 
           <TextField
             fullWidth
-            autoComplete="current-password"
             type={showPassword ? 'text' : 'password'}
             label="Password"
             {...getFieldProps('password')}
@@ -106,6 +105,8 @@ export default function RegisterForm() {
             error={Boolean(touched.password && errors.password)}
             helperText={touched.password && errors.password}
           />
+
+          <Box color="red">{err}</Box>
 
           <LoadingButton
             fullWidth

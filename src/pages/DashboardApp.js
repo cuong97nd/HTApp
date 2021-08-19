@@ -65,6 +65,7 @@ function DashboardApp() {
               listCustomers(filter: {email: {eq: $email}}) {
                 items {
                   name
+                  email
                 }
               }
             }`,
@@ -74,8 +75,11 @@ function DashboardApp() {
         if (test.data.listCustomers.items.length === 0) {
           navigate('/dashboard/profile');
         }
+        userDetail.displayName = test.data.listCustomers.items[0].name;
+        userDetail.email = test.data.listCustomers.items[0].email;
+        console.log('user detail', test.data.listCustomers.items[0]);
       } catch (error) {
-        navigate('/dashboard/profile');
+        console.log(error);
       }
     })();
   }, []);
@@ -102,20 +106,10 @@ function DashboardApp() {
           color="primary"
           size="large"
           component={RouterLink}
-          to="/dashboard/addFood"
+          to="/dashboard/add"
         >
           <AddIcon />
-          Add Food
-        </Fab>{' '}
-        <Fab
-          variant="extended"
-          color="secondary"
-          size="large"
-          component={RouterLink}
-          to="/dashboard/addMotion"
-        >
-          <AddIcon />
-          Add Motion
+          Add
         </Fab>
       </Box>
     </Page>
@@ -123,3 +117,4 @@ function DashboardApp() {
 }
 
 export default AuthStateApp;
+export const userDetail = { photoURL: '/static/mock-images/avatars/avatar_default.jpg' };

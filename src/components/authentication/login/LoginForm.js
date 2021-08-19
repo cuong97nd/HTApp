@@ -10,6 +10,7 @@ import { Authenticator, SignIn, SignUp, ConfirmSignUp, Greetings } from 'aws-amp
 
 // material
 import {
+  Box,
   Link,
   Stack,
   Checkbox,
@@ -26,6 +27,7 @@ import { myAuthS } from '../../../App';
 export default function LoginForm() {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
+  const [err, setErr] = useState('');
 
   const LoginSchema = Yup.object().shape({
     email: Yup.string().required('Username is required'),
@@ -40,10 +42,16 @@ export default function LoginForm() {
     },
     validationSchema: LoginSchema,
     onSubmit: (values, { setSubmitting }) => {
-      Auth.signIn(values.email, values.password).then(() => {
-        myAuthS.Auth = 'signIn';
-        navigate('/');
-      });
+      Auth.signIn(values.email, values.password)
+        .then(() => {
+          myAuthS.Auth = 'signIn';
+          navigate('/');
+        })
+        .catch((e) => {
+          console.log(e);
+          setErr(e.message);
+          setSubmitting(false);
+        });
     }
   });
 
@@ -106,11 +114,7 @@ export default function LoginForm() {
         </Stack>
 
         <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ my: 2 }}>
-          <FormControlLabel
-            control={<Checkbox {...getFieldProps('remember')} checked={values.remember} />}
-            label="Remember me"
-          />
-
+          <Box color="red">{err}</Box>
           <Link component={RouterLink} variant="subtitle2" to="#">
             Forgot password?
           </Link>

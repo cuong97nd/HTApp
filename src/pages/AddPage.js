@@ -18,6 +18,7 @@ import { Form, FormikProvider, useFormik } from 'formik';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
+import Add from './Add';
 
 // ----------------------------------------------------------------------
 const useStyles = makeStyles((theme) => ({
@@ -30,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export default function Add({ type }) {
+export default function AddPage({ type }) {
   const classes = useStyles();
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
@@ -44,7 +45,8 @@ export default function Add({ type }) {
     initialValues: {
       select: '',
       unit: '',
-      time: 'morning'
+      time: 'morning',
+      weight: ''
     },
     validationSchema: LoginSchema,
     onSubmit: (values, { setSubmitting }) => {
@@ -56,12 +58,12 @@ export default function Add({ type }) {
           const test = await API.graphql(
             graphqlOperation(
               `query MyQuery($email: String) {
-              listCustomers(filter: {email: {eq: $email}}) {
-                items {
-                  id
+                listCustomers(filter: {email: {eq: $email}}) {
+                  items {
+                    id
+                  }
                 }
-              }
-            }`,
+              }`,
               { email: user.attributes.email }
             )
           );
@@ -70,18 +72,17 @@ export default function Add({ type }) {
 
           await API.graphql(
             graphqlOperation(
-              `mutation MyMutation($foodDeitalForReportFoodId: ID, $customerID: ID, $unit: String , $creatDate :String ,$time :String) {
-              createFoodDeitalForReport(input: {foodDeitalForReportFoodId: $foodDeitalForReportFoodId, customerID: $customerID, unit: $unit , creatDate : $creatDate , time : $time}) {
-                id
-              }
-            }            
-            `,
+              `mutation MyMutation($foodDeitalForReportFoodId: ID, $customerID: ID, $unit: String , $creatDate :String) {
+                createFoodDeitalForReport(input: {foodDeitalForReportFoodId: $foodDeitalForReportFoodId, customerID: $customerID, unit: $unit , creatDate : $creatDate}) {
+                  id
+                }
+              }            
+              `,
               {
                 foodDeitalForReportFoodId: values.select.id,
                 customerID: test.data.listCustomers.items[0].id,
                 unit: values.unit.toString(),
-                creatDate: dateString,
-                time: values.time.toString()
+                creatDate: dateString
               }
             )
           );
@@ -94,12 +95,12 @@ export default function Add({ type }) {
           const test = await API.graphql(
             graphqlOperation(
               `query MyQuery($email: String) {
-              listCustomers(filter: {email: {eq: $email}}) {
-                items {
-                  id
+                listCustomers(filter: {email: {eq: $email}}) {
+                  items {
+                    id
+                  }
                 }
-              }
-            }`,
+              }`,
               { email: user.attributes.email }
             )
           );
@@ -109,11 +110,11 @@ export default function Add({ type }) {
           await API.graphql(
             graphqlOperation(
               `mutation MyMutation($motionForReportMotionId: ID, $customerID: ID, $unit: String , $creatDate :String) {
-              createMotionForReport(input: {motionForReportMotionId: $motionForReportMotionId, customerID: $customerID, unit: $unit , creatDate : $creatDate}) {
-                id
-              }
-            }            
-            `,
+                createMotionForReport(input: {motionForReportMotionId: $motionForReportMotionId, customerID: $customerID, unit: $unit , creatDate : $creatDate}) {
+                  id
+                }
+              }            
+              `,
               {
                 motionForReportMotionId: values.select.id,
                 customerID: test.data.listCustomers.items[0].id,
@@ -146,14 +147,14 @@ export default function Add({ type }) {
         const a = await API.graphql(
           graphqlOperation(
             `query MyQuery {
-            listFoods {
-              items {
-                id
-                name
+              listFoods {
+                items {
+                  id
+                  name
+                }
               }
             }
-          }
-          `
+            `
           )
         );
         setSelectArray(a.data.listFoods.items);
@@ -163,14 +164,14 @@ export default function Add({ type }) {
         const a = await API.graphql(
           graphqlOperation(
             `query MyQuery {
-            listMotions {
-              items {
-                id
-                name
+              listMotions {
+                items {
+                  id
+                  name
+                }
               }
-            }
-          }          
-          `
+            }          
+            `
           )
         );
         setSelectArray(a.data.listMotions.items);
@@ -187,68 +188,42 @@ export default function Add({ type }) {
   }, []);
 
   return (
-    <Box display="flex" justifyContent="center">
-      <Box maxWidth="500px" width="100%">
-        <FormikProvider value={formik}>
-          <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
-            <Stack spacing={3} sx={{ my: 2 }}>
-              <Typography variant="h2" sx={{ mt: 3, textAlign: 'center' }}>
-                Add {type}
-              </Typography>
+    <>
+      <Box display="flex" justifyContent="center">
+        <Box maxWidth="500px" width="100%">
+          <FormikProvider value={formik}>
+            <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
+              <Stack spacing={3} sx={{ my: 2 }}>
+                <Typography variant="h2" sx={{ mt: 3, textAlign: 'center' }}>
+                  Add Weight
+                </Typography>
 
-              {type === 'Food' && (
-                <FormControl className={classes.formControl}>
-                  <InputLabel id="demo-simple-select-label">Time</InputLabel>
-                  <Select
-                    label="Time"
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    {...getFieldProps('time')}
-                  >
-                    <MenuItem value="morning">Bữa sáng</MenuItem>
-                    <MenuItem value="afternoon">Bữa trưa</MenuItem>
-                    <MenuItem value="evening">Bữa tối</MenuItem>
-                  </Select>
-                </FormControl>
-              )}
+                <TextField
+                  fullWidth
+                  label="Weight"
+                  type="number"
+                  {...getFieldProps('weight')}
+                  InputProps={{
+                    endAdornment: <InputAdornment position="end">Kg</InputAdornment>
+                  }}
+                />
+              </Stack>
 
-              <Autocomplete
+              <LoadingButton
                 fullWidth
-                onChange={(event, newValue) => {
-                  setFieldValue('select', newValue);
-                }}
-                options={selectArray}
-                getOptionLabel={(option) => option.name}
-                renderInput={(params) => <TextField {...params} label={type} variant="outlined" />}
-              />
-
-              <TextField
-                fullWidth
-                label="Unit"
-                type="number"
-                {...getFieldProps('unit')}
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      {type === 'Food' ? 'gram' : 'minute'}
-                    </InputAdornment>
-                  )
-                }}
-              />
-            </Stack>
-
-            <LoadingButton
-              fullWidth
-              size="large"
-              type="submit"
-              variant="contained"
-              loading={isSubmitting}
-            >
-              Report
-            </LoadingButton>
-          </Form>
-        </FormikProvider>
+                size="large"
+                type="submit"
+                variant="contained"
+                loading={isSubmitting}
+              >
+                Report
+              </LoadingButton>
+            </Form>
+          </FormikProvider>
+        </Box>
       </Box>
-    </Box>
+      <Add type="Food" />
+      <Add type="Motion" />
+    </>
   );
 }

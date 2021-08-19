@@ -1,5 +1,5 @@
 // material
-import { Stack, TextField, Typography } from '@material-ui/core';
+import { Stack, TextField, Typography, InputAdornment } from '@material-ui/core';
 import Box from '@material-ui/core/Box';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
@@ -165,6 +165,9 @@ export default function Profile() {
                 {...getFieldProps('weight')}
                 error={Boolean(touched.email && errors.email)}
                 helperText={touched.email && errors.email}
+                InputProps={{
+                  endAdornment: <InputAdornment position="end">Kg</InputAdornment>
+                }}
               />
 
               <TextField
@@ -174,6 +177,9 @@ export default function Profile() {
                 {...getFieldProps('height')}
                 error={Boolean(touched.password && errors.password)}
                 helperText={touched.password && errors.password}
+                InputProps={{
+                  endAdornment: <InputAdornment position="end">Cm</InputAdornment>
+                }}
               />
 
               <FormControl className={classes.formControl}>
