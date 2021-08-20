@@ -66,6 +66,7 @@ function DashboardApp() {
                 items {
                   name
                   email
+                  id
                 }
               }
             }`,
@@ -77,6 +78,7 @@ function DashboardApp() {
         }
         userDetail.displayName = test.data.listCustomers.items[0].name;
         userDetail.email = test.data.listCustomers.items[0].email;
+        userDetail.id = test.data.listCustomers.items[0].id;
         console.log('user detail', test.data.listCustomers.items[0]);
       } catch (error) {
         console.log(error);

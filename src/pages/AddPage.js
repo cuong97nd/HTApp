@@ -7,18 +7,21 @@ import {
   MenuItem,
   Select,
   InputLabel,
-  FormControl
+  FormControl,
+  Snackbar
 } from '@material-ui/core';
 import Box from '@material-ui/core/Box';
 import { LoadingButton } from '@material-ui/lab';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { makeStyles } from '@material-ui/styles';
-import { API, Auth, graphqlOperation } from 'aws-amplify';
+import { API, Auth, graphqlOperation, Hub } from 'aws-amplify';
 import { Form, FormikProvider, useFormik } from 'formik';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import MuiAlert from '@material-ui/lab/Alert';
 import * as Yup from 'yup';
 import Add from './Add';
+import { userDetail as account } from './DashboardApp';
 
 // ----------------------------------------------------------------------
 const useStyles = makeStyles((theme) => ({
@@ -31,15 +34,18 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
+
 export default function AddPage({ type }) {
   const classes = useStyles();
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [selectArray, setSelectArray] = useState([]);
+  const [open, setOpen] = useState(false);
 
-  const LoginSchema = Yup.object().shape({
-    unit: Yup.string().required('Unit is required')
-  });
+  const LoginSchema = Yup.object().shape({});
 
   const formik = useFormik({
     initialValues: {
@@ -50,91 +56,30 @@ export default function AddPage({ type }) {
     },
     validationSchema: LoginSchema,
     onSubmit: (values, { setSubmitting }) => {
-      try {
-        const date = new Date();
-        const dateString = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
-        const sentFood = async () => {
-          const user = await Auth.currentAuthenticatedUser();
-          const test = await API.graphql(
-            graphqlOperation(
-              `query MyQuery($email: String) {
-                listCustomers(filter: {email: {eq: $email}}) {
-                  items {
-                    id
-                  }
-                }
-              }`,
-              { email: user.attributes.email }
-            )
-          );
-          console.log('userID', test.data.listCustomers.items[0].id);
-          console.log('FoodID', values);
-
-          await API.graphql(
-            graphqlOperation(
-              `mutation MyMutation($foodDeitalForReportFoodId: ID, $customerID: ID, $unit: String , $creatDate :String) {
-                createFoodDeitalForReport(input: {foodDeitalForReportFoodId: $foodDeitalForReportFoodId, customerID: $customerID, unit: $unit , creatDate : $creatDate}) {
-                  id
-                }
-              }            
-              `,
-              {
-                foodDeitalForReportFoodId: values.select.id,
-                customerID: test.data.listCustomers.items[0].id,
-                unit: values.unit.toString(),
-                creatDate: dateString
-              }
-            )
-          );
+      const date = new Date();
+      const dateString = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
+      API.graphql(
+        graphqlOperation(
+          `mutation MyMutation($weight: String , $customerID: ID , $creatDate: String ) {
+            createWeightForReport(input: {creatDate: $creatDate, customerID: $customerID, weight: $weight}) {
+              id
+            }
+          }                      
+        `,
+          {
+            weight: values.weight.toString(),
+            customerID: account.id,
+            creatDate: dateString
+          }
+        )
+      )
+        .then(() => {
+          setOpen(true);
           setSubmitting(false);
-          setValues(initialValues);
-        };
-
-        const sentMotion = async () => {
-          const user = await Auth.currentAuthenticatedUser();
-          const test = await API.graphql(
-            graphqlOperation(
-              `query MyQuery($email: String) {
-                listCustomers(filter: {email: {eq: $email}}) {
-                  items {
-                    id
-                  }
-                }
-              }`,
-              { email: user.attributes.email }
-            )
-          );
-          console.log('userID', test.data.listCustomers.items[0].id);
-          console.log('FoodID', values);
-
-          await API.graphql(
-            graphqlOperation(
-              `mutation MyMutation($motionForReportMotionId: ID, $customerID: ID, $unit: String , $creatDate :String) {
-                createMotionForReport(input: {motionForReportMotionId: $motionForReportMotionId, customerID: $customerID, unit: $unit , creatDate : $creatDate}) {
-                  id
-                }
-              }            
-              `,
-              {
-                motionForReportMotionId: values.select.id,
-                customerID: test.data.listCustomers.items[0].id,
-                unit: values.unit.toString(),
-                creatDate: dateString
-              }
-            )
-          );
+        })
+        .catch(() => {
           setSubmitting(false);
-          setValues(initialValues);
-        };
-
-        if (type === 'Food') {
-          sentFood();
-        } else {
-          sentMotion();
-        }
-      } catch (error) {
-        console.log(error);
-      }
+        });
     }
   });
 
@@ -142,49 +87,15 @@ export default function AddPage({ type }) {
     formik;
 
   useEffect(() => {
-    try {
-      const initFood = async () => {
-        const a = await API.graphql(
-          graphqlOperation(
-            `query MyQuery {
-              listFoods {
-                items {
-                  id
-                  name
-                }
-              }
-            }
-            `
-          )
-        );
-        setSelectArray(a.data.listFoods.items);
-      };
+    const a = (data) => {
+      setOpen(true);
+    };
 
-      const initMotion = async () => {
-        const a = await API.graphql(
-          graphqlOperation(
-            `query MyQuery {
-              listMotions {
-                items {
-                  id
-                  name
-                }
-              }
-            }          
-            `
-          )
-        );
-        setSelectArray(a.data.listMotions.items);
-      };
+    Hub.listen('reportSS', a);
 
-      if (type === 'Food') {
-        initFood();
-      } else {
-        initMotion();
-      }
-    } catch (error) {
-      console.log(error);
-    }
+    return () => {
+      Hub.remove('reportSS', a);
+    };
   }, []);
 
   return (
@@ -224,6 +135,33 @@ export default function AddPage({ type }) {
       </Box>
       <Add type="Food" />
       <Add type="Motion" />
+      <Snackbar
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+        open={open}
+        autoHideDuration={6000}
+        onClose={(event, reason) => {
+          if (reason === 'clickaway') {
+            return;
+          }
+
+          setOpen(false);
+        }}
+      >
+        <Box>
+          <Alert
+            onClose={(event, reason) => {
+              if (reason === 'clickaway') {
+                return;
+              }
+
+              setOpen(false);
+            }}
+            severity="success"
+          >
+            Report success!
+          </Alert>
+        </Box>
+      </Snackbar>
     </>
   );
 }

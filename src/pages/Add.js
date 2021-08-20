@@ -13,7 +13,7 @@ import Box from '@material-ui/core/Box';
 import { LoadingButton } from '@material-ui/lab';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { makeStyles } from '@material-ui/styles';
-import { API, Auth, graphqlOperation } from 'aws-amplify';
+import { API, Auth, graphqlOperation, Hub } from 'aws-amplify';
 import { Form, FormikProvider, useFormik } from 'formik';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -50,7 +50,7 @@ export default function Add({ type }) {
     onSubmit: (values, { setSubmitting }) => {
       try {
         const date = new Date();
-        const dateString = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
+        const dateString = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
         const sentFood = async () => {
           const user = await Auth.currentAuthenticatedUser();
           const test = await API.graphql(
@@ -87,6 +87,7 @@ export default function Add({ type }) {
           );
           setSubmitting(false);
           setValues(initialValues);
+          Hub.dispatch('reportSS', {});
         };
 
         const sentMotion = async () => {
@@ -124,6 +125,7 @@ export default function Add({ type }) {
           );
           setSubmitting(false);
           setValues(initialValues);
+          Hub.dispatch('reportSS', {});
         };
 
         if (type === 'Food') {

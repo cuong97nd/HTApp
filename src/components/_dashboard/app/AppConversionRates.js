@@ -49,7 +49,7 @@ export default function AppConversionRates() {
   ]);
 
   useEffect(() => {
-    const dateString = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
+    const dateString = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
     (async () => {
       const user = await Auth.currentAuthenticatedUser();
       try {
@@ -151,7 +151,7 @@ export default function AppConversionRates() {
     <Card>
       <CardHeader
         title="体の状況"
-        subheader={`${date.getFullYear()}年${date.getMonth()}月${date.getDate()}日`}
+        subheader={`${date.getFullYear()}年${date.getMonth() + 1}月${date.getDate()}日`}
       />
       <Box sx={{ mx: 3 }} dir="ltr">
         <ReactApexChart options={options} series={series} type="bar" height={350} />
