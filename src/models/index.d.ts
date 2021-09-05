@@ -4,6 +4,18 @@ import { ModelInit, MutableModel, PersistentModelConstructor } from "@aws-amplif
 
 
 
+type ReportMetaData = {
+  readOnlyFields: 'createdAt' | 'updatedAt';
+}
+
+type NutritionStandardMetaData = {
+  readOnlyFields: 'createdAt' | 'updatedAt';
+}
+
+type WeightForReportMetaData = {
+  readOnlyFields: 'createdAt' | 'updatedAt';
+}
+
 type MotionForReportMetaData = {
   readOnlyFields: 'createdAt' | 'updatedAt';
 }
@@ -32,11 +44,57 @@ type CustomerMetaData = {
   readOnlyFields: 'createdAt' | 'updatedAt';
 }
 
+export declare class Report {
+  readonly id: string;
+  readonly title?: string;
+  readonly detail?: string;
+  readonly customerID?: string;
+  readonly createdAt?: string;
+  readonly updatedAt?: string;
+  constructor(init: ModelInit<Report, ReportMetaData>);
+  static copyOf(source: Report, mutator: (draft: MutableModel<Report, ReportMetaData>) => MutableModel<Report, ReportMetaData> | void): Report;
+}
+
+export declare class NutritionStandard {
+  readonly id: string;
+  readonly startAge?: string;
+  readonly endAge?: string;
+  readonly Calcium?: string;
+  readonly Magnesium?: string;
+  readonly Phosphorous?: string;
+  readonly VitaminA?: string;
+  readonly VitaminD?: string;
+  readonly VitaminE?: string;
+  readonly VitaminK?: string;
+  readonly VitaminC?: string;
+  readonly VitaminB1?: string;
+  readonly VitaminB2?: string;
+  readonly VitaminB6?: string;
+  readonly VitaminB9?: string;
+  readonly VitaminB12?: string;
+  readonly createdAt?: string;
+  readonly updatedAt?: string;
+  constructor(init: ModelInit<NutritionStandard, NutritionStandardMetaData>);
+  static copyOf(source: NutritionStandard, mutator: (draft: MutableModel<NutritionStandard, NutritionStandardMetaData>) => MutableModel<NutritionStandard, NutritionStandardMetaData> | void): NutritionStandard;
+}
+
+export declare class WeightForReport {
+  readonly id: string;
+  readonly weight?: string;
+  readonly creatDate?: string;
+  readonly customerID?: string;
+  readonly createdAt?: string;
+  readonly updatedAt?: string;
+  constructor(init: ModelInit<WeightForReport, WeightForReportMetaData>);
+  static copyOf(source: WeightForReport, mutator: (draft: MutableModel<WeightForReport, WeightForReportMetaData>) => MutableModel<WeightForReport, WeightForReportMetaData> | void): WeightForReport;
+}
+
 export declare class MotionForReport {
   readonly id: string;
   readonly unit?: string;
   readonly customerID?: string;
   readonly Motion?: Motion;
+  readonly creatDate?: string;
   readonly createdAt?: string;
   readonly updatedAt?: string;
   constructor(init: ModelInit<MotionForReport, MotionForReportMetaData>);
@@ -58,6 +116,8 @@ export declare class FoodDeitalForReport {
   readonly unit?: string;
   readonly customerID?: string;
   readonly Food?: Food;
+  readonly creatDate?: string;
+  readonly time?: string;
   readonly createdAt?: string;
   readonly updatedAt?: string;
   constructor(init: ModelInit<FoodDeitalForReport, FoodDeitalForReportMetaData>);
@@ -67,6 +127,93 @@ export declare class FoodDeitalForReport {
 export declare class Food {
   readonly id: string;
   readonly name?: string;
+  readonly Water?: string;
+  readonly Energy?: string;
+  readonly Energy2?: string;
+  readonly Protein?: string;
+  readonly Lipid?: string;
+  readonly Carbohydrate?: string;
+  readonly Celluloza?: string;
+  readonly Ash?: string;
+  readonly Sugar?: string;
+  readonly Galactose?: string;
+  readonly Maltose?: string;
+  readonly Lactose?: string;
+  readonly Fructose?: string;
+  readonly Glucose?: string;
+  readonly Sucrose?: string;
+  readonly Calcium?: string;
+  readonly Iron?: string;
+  readonly Magnesium?: string;
+  readonly Manganese?: string;
+  readonly Phosphorous?: string;
+  readonly Potassium?: string;
+  readonly Sodium?: string;
+  readonly Zinc?: string;
+  readonly Copper?: string;
+  readonly Selenium?: string;
+  readonly VitaminC?: string;
+  readonly VitaminB1?: string;
+  readonly VitaminB2?: string;
+  readonly VitaminPP?: string;
+  readonly VitaminB5?: string;
+  readonly VitaminB6?: string;
+  readonly Folate?: string;
+  readonly VitaminB9?: string;
+  readonly VitaminH?: string;
+  readonly VitaminB12?: string;
+  readonly VitaminA?: string;
+  readonly VitaminD?: string;
+  readonly VitaminE?: string;
+  readonly VitaminK?: string;
+  readonly BetaCaroten?: string;
+  readonly AlphaCaroten?: string;
+  readonly BetaCryptoxanthin?: string;
+  readonly Lycopen?: string;
+  readonly LuteinZeaxanthin?: string;
+  readonly Purin?: string;
+  readonly TotalIsoflavone?: string;
+  readonly Daidzein?: string;
+  readonly Genistein?: string;
+  readonly Glycetin?: string;
+  readonly TotalSaturatedFattyAcid?: string;
+  readonly Palmitic?: string;
+  readonly Margaric?: string;
+  readonly Stearic?: string;
+  readonly Arachidic?: string;
+  readonly Behenic?: string;
+  readonly Lignoceric?: string;
+  readonly TotalMonounsaturatedFattyAcid?: string;
+  readonly Myristoleic?: string;
+  readonly Palmitoleic?: string;
+  readonly Oleic?: string;
+  readonly TotalPolyunsaturatedFattyAcid?: string;
+  readonly Linoleic?: string;
+  readonly Linolenic?: string;
+  readonly Arachidonic?: string;
+  readonly Eicosapentaenoic?: string;
+  readonly Docosahexaenoic?: string;
+  readonly TotalTransFattyAcid?: string;
+  readonly Cholesterol?: string;
+  readonly Phytosterol?: string;
+  readonly Lysin?: string;
+  readonly Methionin?: string;
+  readonly Tryptophan?: string;
+  readonly Phenylalanin?: string;
+  readonly Threonin?: string;
+  readonly Valin?: string;
+  readonly Leucin?: string;
+  readonly Isoleucin?: string;
+  readonly Arginin?: string;
+  readonly Histidin?: string;
+  readonly Cystin?: string;
+  readonly Tyrosin?: string;
+  readonly Alanin?: string;
+  readonly AcidAspartic?: string;
+  readonly AcidGlutamic?: string;
+  readonly Glycin?: string;
+  readonly Prolin?: string;
+  readonly Serin?: string;
   readonly MaterialDeitalForFoods?: (MaterialDeitalForFood | null)[];
   readonly createdAt?: string;
   readonly updatedAt?: string;
@@ -123,7 +270,7 @@ export declare class Material {
   readonly VitaminH?: string;
   readonly VitaminB12?: string;
   readonly VitaminA?: string;
-  readonly VitamnD?: string;
+  readonly VitaminD?: string;
   readonly VitaminE?: string;
   readonly VitaminK?: string;
   readonly BetaCaroten?: string;
@@ -192,6 +339,8 @@ export declare class Customer {
   readonly height?: string;
   readonly MotionForReports?: (MotionForReport | null)[];
   readonly FoodDeitalForReports?: (FoodDeitalForReport | null)[];
+  readonly WeightForReports?: (WeightForReport | null)[];
+  readonly Reports?: (Report | null)[];
   readonly createdAt?: string;
   readonly updatedAt?: string;
   constructor(init: ModelInit<Customer, CustomerMetaData>);

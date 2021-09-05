@@ -3,7 +3,7 @@ import { myAuthS } from './App';
 // layouts
 import DashboardLayout from './layouts/dashboard';
 import LogoOnlyLayout from './layouts/LogoOnlyLayout';
-import Add from './pages/Add';
+import Report from './pages/Report';
 import AddPage from './pages/AddPage';
 
 import DashboardApp from './pages/DashboardApp';
@@ -23,7 +23,8 @@ export default function Router() {
         { path: '/', element: <Navigate to="/dashboard/app" replace /> },
         { path: 'app', element: <DashboardApp myAuthS={myAuthS} /> },
         { path: 'profile', element: <Profile /> },
-        { path: 'add', element: <AddPage /> }
+        { path: 'add', element: <AddPage /> },
+        { path: 'report', element: <Report /> }
       ]
     },
     {

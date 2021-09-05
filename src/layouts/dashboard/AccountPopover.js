@@ -3,6 +3,7 @@ import { useRef, useState } from 'react';
 import homeFill from '@iconify/icons-eva/home-fill';
 import personFill from '@iconify/icons-eva/person-fill';
 import settings2Fill from '@iconify/icons-eva/settings-2-fill';
+import bugReportIcon from '@iconify/icons-eva/paper-plane-fill';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { Auth } from 'aws-amplify';
 // material
@@ -31,6 +32,11 @@ const MENU_OPTIONS = [
     label: 'Settings',
     icon: settings2Fill,
     linkTo: '#'
+  },
+  {
+    label: 'Report',
+    icon: bugReportIcon,
+    linkTo: 'report'
   }
 ];
 

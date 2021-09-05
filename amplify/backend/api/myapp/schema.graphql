@@ -1,33 +1,60 @@
-type MotionForReport
-  @model
-  @auth(rules: [{ allow: private }])
-  @key(name: "byCustomer", fields: ["customerID"]) {
+type Report @model @auth(rules: [{allow: private}]) @key(name: "byCustomer", fields: ["customerID"]) {
+  id: ID!
+  title: String
+  detail: String
+  customerID: ID
+}
+
+type NutritionStandard @model @auth(rules: [{allow: private}]) {
+  id: ID!
+  startAge: String
+  endAge: String
+  Calcium: String
+  Magnesium: String
+  Phosphorous: String
+  VitaminA: String
+  VitaminD: String
+  VitaminE: String
+  VitaminK: String
+  VitaminC: String
+  VitaminB1: String
+  VitaminB2: String
+  VitaminB6: String
+  VitaminB9: String
+  VitaminB12: String
+}
+
+type WeightForReport @model @auth(rules: [{allow: private}]) @key(name: "byCustomer", fields: ["customerID"]) {
+  id: ID!
+  weight: String
+  creatDate: String
+  customerID: ID
+}
+
+type MotionForReport @model @auth(rules: [{allow: private}]) @key(name: "byCustomer", fields: ["customerID"]) {
   id: ID!
   unit: String
   customerID: ID
   Motion: Motion @connection
+  creatDate: String
 }
 
-type Motion @model @auth(rules: [{ allow: private }]) {
+type Motion @model @auth(rules: [{allow: private}]) {
   id: ID!
   name: String
   calori: String
 }
 
-type FoodDeitalForReport
-  @model
-  @auth(rules: [{ allow: private }])
-  @key(name: "byCustomer", fields: ["customerID"]) {
+type FoodDeitalForReport @model @auth(rules: [{allow: private}]) @key(name: "byCustomer", fields: ["customerID"]) {
   id: ID!
   unit: String
   customerID: ID
   Food: Food @connection
+  creatDate: String
+  time: String
 }
 
-type MaterialDeitalForFood
-  @model
-  @auth(rules: [{ allow: private }])
-  @key(name: "byFood", fields: ["foodID"]) {
+type MaterialDeitalForFood @model @auth(rules: [{allow: private}]) @key(name: "byFood", fields: ["foodID"]) {
   id: ID!
   unit: String
   foodID: ID
@@ -46,6 +73,8 @@ type Customer @model {
   height: String
   MotionForReports: [MotionForReport] @connection(keyName: "byCustomer", fields: ["id"])
   FoodDeitalForReports: [FoodDeitalForReport] @connection(keyName: "byCustomer", fields: ["id"])
+  WeightForReports: [WeightForReport] @connection(keyName: "byCustomer", fields: ["id"])
+  Reports: [Report] @connection(keyName: "byCustomer", fields: ["id"])
 }
 
 type Food @model {
@@ -87,7 +116,7 @@ type Food @model {
   VitaminH: String
   VitaminB12: String
   VitaminA: String
-  VitamnD: String
+  VitaminD: String
   VitaminE: String
   VitaminK: String
   BetaCaroten: String
@@ -179,7 +208,7 @@ type Material @model {
   VitaminH: String
   VitaminB12: String
   VitaminA: String
-  VitamnD: String
+  VitaminD: String
   VitaminE: String
   VitaminK: String
   BetaCaroten: String
@@ -231,3 +260,4 @@ type Material @model {
   Prolin: String
   Serin: String
 }
+ 
