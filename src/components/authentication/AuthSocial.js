@@ -13,29 +13,11 @@ export default function AuthSocial() {
     <>
       <Tooltip title="comming soon">
         <Stack direction="row" spacing={2}>
-          <Button
-            fullWidth
-            size="large"
-            color="inherit"
-            variant="outlined"
-            onClick={() => {
-              Auth.federatedSignIn({ provider: 'Google' });
-            }}
-            disabled
-          >
+          <Button fullWidth size="large" color="inherit" variant="outlined" disabled>
             <Icon icon={googleFill} color="#DF3E30" height={24} />
           </Button>
 
-          <Button
-            fullWidth
-            size="large"
-            color="inherit"
-            variant="outlined"
-            onClick={() => {
-              Auth.federatedSignIn({ provider: 'Facebook' });
-            }}
-            disabled
-          >
+          <Button fullWidth size="large" color="inherit" variant="outlined" disabled>
             <Icon icon={facebookFill} color="#1877F2" height={24} />
           </Button>
         </Stack>
