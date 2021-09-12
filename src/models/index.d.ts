@@ -8,11 +8,7 @@ type ReportMetaData = {
   readOnlyFields: 'createdAt' | 'updatedAt';
 }
 
-type NutritionStandardMetaData = {
-  readOnlyFields: 'createdAt' | 'updatedAt';
-}
-
-type WeightForReportMetaData = {
+type CustomerMetaData = {
   readOnlyFields: 'createdAt' | 'updatedAt';
 }
 
@@ -40,53 +36,45 @@ type MaterialMetaData = {
   readOnlyFields: 'createdAt' | 'updatedAt';
 }
 
-type CustomerMetaData = {
+type WeightForReportMetaData = {
+  readOnlyFields: 'createdAt' | 'updatedAt';
+}
+
+type NutritionStandardMetaData = {
   readOnlyFields: 'createdAt' | 'updatedAt';
 }
 
 export declare class Report {
   readonly id: string;
   readonly title?: string;
-  readonly detail?: string;
-  readonly customerID?: string;
+  readonly moiTruong?: string;
+  readonly Customer?: Customer;
+  readonly cachTaiHien?: string;
+  readonly ketQuaMongMuon?: string;
+  readonly trangThai?: string;
   readonly createdAt?: string;
   readonly updatedAt?: string;
   constructor(init: ModelInit<Report, ReportMetaData>);
   static copyOf(source: Report, mutator: (draft: MutableModel<Report, ReportMetaData>) => MutableModel<Report, ReportMetaData> | void): Report;
 }
 
-export declare class NutritionStandard {
+export declare class Customer {
   readonly id: string;
-  readonly startAge?: string;
-  readonly endAge?: string;
-  readonly Calcium?: string;
-  readonly Magnesium?: string;
-  readonly Phosphorous?: string;
-  readonly VitaminA?: string;
-  readonly VitaminD?: string;
-  readonly VitaminE?: string;
-  readonly VitaminK?: string;
-  readonly VitaminC?: string;
-  readonly VitaminB1?: string;
-  readonly VitaminB2?: string;
-  readonly VitaminB6?: string;
-  readonly VitaminB9?: string;
-  readonly VitaminB12?: string;
-  readonly createdAt?: string;
-  readonly updatedAt?: string;
-  constructor(init: ModelInit<NutritionStandard, NutritionStandardMetaData>);
-  static copyOf(source: NutritionStandard, mutator: (draft: MutableModel<NutritionStandard, NutritionStandardMetaData>) => MutableModel<NutritionStandard, NutritionStandardMetaData> | void): NutritionStandard;
-}
-
-export declare class WeightForReport {
-  readonly id: string;
+  readonly name?: string;
+  readonly phoneNumber?: string;
+  readonly email?: string;
+  readonly age?: string;
+  readonly dateOfBirth?: string;
+  readonly sex?: string;
   readonly weight?: string;
-  readonly creatDate?: string;
-  readonly customerID?: string;
+  readonly height?: string;
+  readonly MotionForReports?: (MotionForReport | null)[];
+  readonly FoodDeitalForReports?: (FoodDeitalForReport | null)[];
+  readonly WeightForReports?: (WeightForReport | null)[];
   readonly createdAt?: string;
   readonly updatedAt?: string;
-  constructor(init: ModelInit<WeightForReport, WeightForReportMetaData>);
-  static copyOf(source: WeightForReport, mutator: (draft: MutableModel<WeightForReport, WeightForReportMetaData>) => MutableModel<WeightForReport, WeightForReportMetaData> | void): WeightForReport;
+  constructor(init: ModelInit<Customer, CustomerMetaData>);
+  static copyOf(source: Customer, mutator: (draft: MutableModel<Customer, CustomerMetaData>) => MutableModel<Customer, CustomerMetaData> | void): Customer;
 }
 
 export declare class MotionForReport {
@@ -327,22 +315,36 @@ export declare class Material {
   static copyOf(source: Material, mutator: (draft: MutableModel<Material, MaterialMetaData>) => MutableModel<Material, MaterialMetaData> | void): Material;
 }
 
-export declare class Customer {
+export declare class WeightForReport {
   readonly id: string;
-  readonly name?: string;
-  readonly phoneNumber?: string;
-  readonly email?: string;
-  readonly age?: string;
-  readonly dateOfBirth?: string;
-  readonly sex?: string;
   readonly weight?: string;
-  readonly height?: string;
-  readonly MotionForReports?: (MotionForReport | null)[];
-  readonly FoodDeitalForReports?: (FoodDeitalForReport | null)[];
-  readonly WeightForReports?: (WeightForReport | null)[];
-  readonly Reports?: (Report | null)[];
+  readonly creatDate?: string;
+  readonly customerID?: string;
   readonly createdAt?: string;
   readonly updatedAt?: string;
-  constructor(init: ModelInit<Customer, CustomerMetaData>);
-  static copyOf(source: Customer, mutator: (draft: MutableModel<Customer, CustomerMetaData>) => MutableModel<Customer, CustomerMetaData> | void): Customer;
+  constructor(init: ModelInit<WeightForReport, WeightForReportMetaData>);
+  static copyOf(source: WeightForReport, mutator: (draft: MutableModel<WeightForReport, WeightForReportMetaData>) => MutableModel<WeightForReport, WeightForReportMetaData> | void): WeightForReport;
+}
+
+export declare class NutritionStandard {
+  readonly id: string;
+  readonly startAge?: string;
+  readonly endAge?: string;
+  readonly Calcium?: string;
+  readonly Magnesium?: string;
+  readonly Phosphorous?: string;
+  readonly VitaminA?: string;
+  readonly VitaminD?: string;
+  readonly VitaminE?: string;
+  readonly VitaminK?: string;
+  readonly VitaminC?: string;
+  readonly VitaminB1?: string;
+  readonly VitaminB2?: string;
+  readonly VitaminB6?: string;
+  readonly VitaminB9?: string;
+  readonly VitaminB12?: string;
+  readonly createdAt?: string;
+  readonly updatedAt?: string;
+  constructor(init: ModelInit<NutritionStandard, NutritionStandardMetaData>);
+  static copyOf(source: NutritionStandard, mutator: (draft: MutableModel<NutritionStandard, NutritionStandardMetaData>) => MutableModel<NutritionStandard, NutritionStandardMetaData> | void): NutritionStandard;
 }

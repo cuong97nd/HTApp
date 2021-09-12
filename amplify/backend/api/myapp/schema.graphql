@@ -1,8 +1,11 @@
-type Report @model @auth(rules: [{allow: private}]) @key(name: "byCustomer", fields: ["customerID"]) {
+type Report @model @auth(rules: [{allow: private}]) {
   id: ID!
   title: String
-  detail: String
-  customerID: ID
+  moiTruong: String
+  Customer: Customer @connection
+  cachTaiHien: String
+  ketQuaMongMuon: String
+  trangThai: String
 }
 
 type NutritionStandard @model @auth(rules: [{allow: private}]) {
@@ -74,7 +77,6 @@ type Customer @model {
   MotionForReports: [MotionForReport] @connection(keyName: "byCustomer", fields: ["id"])
   FoodDeitalForReports: [FoodDeitalForReport] @connection(keyName: "byCustomer", fields: ["id"])
   WeightForReports: [WeightForReport] @connection(keyName: "byCustomer", fields: ["id"])
-  Reports: [Report] @connection(keyName: "byCustomer", fields: ["id"])
 }
 
 type Food @model {

@@ -17,17 +17,44 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
-                "detail": {
-                    "name": "detail",
+                "moiTruong": {
+                    "name": "moiTruong",
                     "isArray": false,
                     "type": "String",
                     "isRequired": false,
                     "attributes": []
                 },
-                "customerID": {
-                    "name": "customerID",
+                "Customer": {
+                    "name": "Customer",
                     "isArray": false,
-                    "type": "ID",
+                    "type": {
+                        "model": "Customer"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "association": {
+                        "connectionType": "BELONGS_TO",
+                        "targetName": "reportCustomerId"
+                    }
+                },
+                "cachTaiHien": {
+                    "name": "cachTaiHien",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "ketQuaMongMuon": {
+                    "name": "ketQuaMongMuon",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "trangThai": {
+                    "name": "trangThai",
+                    "isArray": false,
+                    "type": "String",
                     "isRequired": false,
                     "attributes": []
                 },
@@ -56,15 +83,6 @@ export const schema = {
                     "properties": {}
                 },
                 {
-                    "type": "key",
-                    "properties": {
-                        "name": "byCustomer",
-                        "fields": [
-                            "customerID"
-                        ]
-                    }
-                },
-                {
                     "type": "auth",
                     "properties": {
                         "rules": [
@@ -82,8 +100,8 @@ export const schema = {
                 }
             ]
         },
-        "NutritionStandard": {
-            "name": "NutritionStandard",
+        "Customer": {
+            "name": "Customer",
             "fields": {
                 "id": {
                     "name": "id",
@@ -92,161 +110,46 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "startAge": {
-                    "name": "startAge",
+                "name": {
+                    "name": "name",
                     "isArray": false,
                     "type": "String",
                     "isRequired": false,
                     "attributes": []
                 },
-                "endAge": {
-                    "name": "endAge",
+                "phoneNumber": {
+                    "name": "phoneNumber",
                     "isArray": false,
                     "type": "String",
                     "isRequired": false,
                     "attributes": []
                 },
-                "Calcium": {
-                    "name": "Calcium",
+                "email": {
+                    "name": "email",
                     "isArray": false,
                     "type": "String",
                     "isRequired": false,
                     "attributes": []
                 },
-                "Magnesium": {
-                    "name": "Magnesium",
+                "age": {
+                    "name": "age",
                     "isArray": false,
                     "type": "String",
                     "isRequired": false,
                     "attributes": []
                 },
-                "Phosphorous": {
-                    "name": "Phosphorous",
+                "dateOfBirth": {
+                    "name": "dateOfBirth",
                     "isArray": false,
                     "type": "String",
                     "isRequired": false,
                     "attributes": []
                 },
-                "VitaminA": {
-                    "name": "VitaminA",
+                "sex": {
+                    "name": "sex",
                     "isArray": false,
                     "type": "String",
                     "isRequired": false,
-                    "attributes": []
-                },
-                "VitaminD": {
-                    "name": "VitaminD",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "VitaminE": {
-                    "name": "VitaminE",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "VitaminK": {
-                    "name": "VitaminK",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "VitaminC": {
-                    "name": "VitaminC",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "VitaminB1": {
-                    "name": "VitaminB1",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "VitaminB2": {
-                    "name": "VitaminB2",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "VitaminB6": {
-                    "name": "VitaminB6",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "VitaminB9": {
-                    "name": "VitaminB9",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "VitaminB12": {
-                    "name": "VitaminB12",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "createdAt": {
-                    "name": "createdAt",
-                    "isArray": false,
-                    "type": "AWSDateTime",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isReadOnly": true
-                },
-                "updatedAt": {
-                    "name": "updatedAt",
-                    "isArray": false,
-                    "type": "AWSDateTime",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isReadOnly": true
-                }
-            },
-            "syncable": true,
-            "pluralName": "NutritionStandards",
-            "attributes": [
-                {
-                    "type": "model",
-                    "properties": {}
-                },
-                {
-                    "type": "auth",
-                    "properties": {
-                        "rules": [
-                            {
-                                "allow": "private",
-                                "operations": [
-                                    "create",
-                                    "update",
-                                    "delete",
-                                    "read"
-                                ]
-                            }
-                        ]
-                    }
-                }
-            ]
-        },
-        "WeightForReport": {
-            "name": "WeightForReport",
-            "fields": {
-                "id": {
-                    "name": "id",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": true,
                     "attributes": []
                 },
                 "weight": {
@@ -256,19 +159,54 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
-                "creatDate": {
-                    "name": "creatDate",
+                "height": {
+                    "name": "height",
                     "isArray": false,
                     "type": "String",
                     "isRequired": false,
                     "attributes": []
                 },
-                "customerID": {
-                    "name": "customerID",
-                    "isArray": false,
-                    "type": "ID",
+                "MotionForReports": {
+                    "name": "MotionForReports",
+                    "isArray": true,
+                    "type": {
+                        "model": "MotionForReport"
+                    },
                     "isRequired": false,
-                    "attributes": []
+                    "attributes": [],
+                    "isArrayNullable": true,
+                    "association": {
+                        "connectionType": "HAS_MANY",
+                        "associatedWith": "customerID"
+                    }
+                },
+                "FoodDeitalForReports": {
+                    "name": "FoodDeitalForReports",
+                    "isArray": true,
+                    "type": {
+                        "model": "FoodDeitalForReport"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true,
+                    "association": {
+                        "connectionType": "HAS_MANY",
+                        "associatedWith": "customerID"
+                    }
+                },
+                "WeightForReports": {
+                    "name": "WeightForReports",
+                    "isArray": true,
+                    "type": {
+                        "model": "WeightForReport"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true,
+                    "association": {
+                        "connectionType": "HAS_MANY",
+                        "associatedWith": "customerID"
+                    }
                 },
                 "createdAt": {
                     "name": "createdAt",
@@ -288,36 +226,11 @@ export const schema = {
                 }
             },
             "syncable": true,
-            "pluralName": "WeightForReports",
+            "pluralName": "Customers",
             "attributes": [
                 {
                     "type": "model",
                     "properties": {}
-                },
-                {
-                    "type": "key",
-                    "properties": {
-                        "name": "byCustomer",
-                        "fields": [
-                            "customerID"
-                        ]
-                    }
-                },
-                {
-                    "type": "auth",
-                    "properties": {
-                        "rules": [
-                            {
-                                "allow": "private",
-                                "operations": [
-                                    "create",
-                                    "update",
-                                    "delete",
-                                    "read"
-                                ]
-                            }
-                        ]
-                    }
                 }
             ]
         },
@@ -1983,56 +1896,14 @@ export const schema = {
                 }
             ]
         },
-        "Customer": {
-            "name": "Customer",
+        "WeightForReport": {
+            "name": "WeightForReport",
             "fields": {
                 "id": {
                     "name": "id",
                     "isArray": false,
                     "type": "ID",
                     "isRequired": true,
-                    "attributes": []
-                },
-                "name": {
-                    "name": "name",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "phoneNumber": {
-                    "name": "phoneNumber",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "email": {
-                    "name": "email",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "age": {
-                    "name": "age",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "dateOfBirth": {
-                    "name": "dateOfBirth",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "sex": {
-                    "name": "sex",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
                     "attributes": []
                 },
                 "weight": {
@@ -2042,68 +1913,19 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
-                "height": {
-                    "name": "height",
+                "creatDate": {
+                    "name": "creatDate",
                     "isArray": false,
                     "type": "String",
                     "isRequired": false,
                     "attributes": []
                 },
-                "MotionForReports": {
-                    "name": "MotionForReports",
-                    "isArray": true,
-                    "type": {
-                        "model": "MotionForReport"
-                    },
+                "customerID": {
+                    "name": "customerID",
+                    "isArray": false,
+                    "type": "ID",
                     "isRequired": false,
-                    "attributes": [],
-                    "isArrayNullable": true,
-                    "association": {
-                        "connectionType": "HAS_MANY",
-                        "associatedWith": "customerID"
-                    }
-                },
-                "FoodDeitalForReports": {
-                    "name": "FoodDeitalForReports",
-                    "isArray": true,
-                    "type": {
-                        "model": "FoodDeitalForReport"
-                    },
-                    "isRequired": false,
-                    "attributes": [],
-                    "isArrayNullable": true,
-                    "association": {
-                        "connectionType": "HAS_MANY",
-                        "associatedWith": "customerID"
-                    }
-                },
-                "WeightForReports": {
-                    "name": "WeightForReports",
-                    "isArray": true,
-                    "type": {
-                        "model": "WeightForReport"
-                    },
-                    "isRequired": false,
-                    "attributes": [],
-                    "isArrayNullable": true,
-                    "association": {
-                        "connectionType": "HAS_MANY",
-                        "associatedWith": "customerID"
-                    }
-                },
-                "Reports": {
-                    "name": "Reports",
-                    "isArray": true,
-                    "type": {
-                        "model": "Report"
-                    },
-                    "isRequired": false,
-                    "attributes": [],
-                    "isArrayNullable": true,
-                    "association": {
-                        "connectionType": "HAS_MANY",
-                        "associatedWith": "customerID"
-                    }
+                    "attributes": []
                 },
                 "createdAt": {
                     "name": "createdAt",
@@ -2123,16 +1945,198 @@ export const schema = {
                 }
             },
             "syncable": true,
-            "pluralName": "Customers",
+            "pluralName": "WeightForReports",
             "attributes": [
                 {
                     "type": "model",
                     "properties": {}
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "byCustomer",
+                        "fields": [
+                            "customerID"
+                        ]
+                    }
+                },
+                {
+                    "type": "auth",
+                    "properties": {
+                        "rules": [
+                            {
+                                "allow": "private",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        "NutritionStandard": {
+            "name": "NutritionStandard",
+            "fields": {
+                "id": {
+                    "name": "id",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "startAge": {
+                    "name": "startAge",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "endAge": {
+                    "name": "endAge",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "Calcium": {
+                    "name": "Calcium",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "Magnesium": {
+                    "name": "Magnesium",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "Phosphorous": {
+                    "name": "Phosphorous",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "VitaminA": {
+                    "name": "VitaminA",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "VitaminD": {
+                    "name": "VitaminD",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "VitaminE": {
+                    "name": "VitaminE",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "VitaminK": {
+                    "name": "VitaminK",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "VitaminC": {
+                    "name": "VitaminC",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "VitaminB1": {
+                    "name": "VitaminB1",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "VitaminB2": {
+                    "name": "VitaminB2",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "VitaminB6": {
+                    "name": "VitaminB6",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "VitaminB9": {
+                    "name": "VitaminB9",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "VitaminB12": {
+                    "name": "VitaminB12",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "createdAt": {
+                    "name": "createdAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                },
+                "updatedAt": {
+                    "name": "updatedAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                }
+            },
+            "syncable": true,
+            "pluralName": "NutritionStandards",
+            "attributes": [
+                {
+                    "type": "model",
+                    "properties": {}
+                },
+                {
+                    "type": "auth",
+                    "properties": {
+                        "rules": [
+                            {
+                                "allow": "private",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            }
+                        ]
+                    }
                 }
             ]
         }
     },
     "enums": {},
     "nonModels": {},
-    "version": "d9aeccd6d51b1b62c989e07294b1e3b9"
+    "version": "42c8fcf87e5deec3b724082cb3460b3d"
 };

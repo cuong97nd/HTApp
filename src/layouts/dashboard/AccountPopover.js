@@ -28,11 +28,11 @@ const MENU_OPTIONS = [
     icon: personFill,
     linkTo: 'profile'
   },
-  {
+  /* {
     label: 'Settings',
     icon: settings2Fill,
     linkTo: '#'
-  },
+  }, */
   {
     label: 'Report',
     icon: bugReportIcon,

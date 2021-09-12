@@ -9,6 +9,7 @@ import {
   InputLabel,
   FormControl
 } from '@material-ui/core';
+import { DataGrid } from '@mui/x-data-grid';
 import Box from '@material-ui/core/Box';
 import { LoadingButton } from '@material-ui/lab';
 import Autocomplete from '@material-ui/lab/Autocomplete';
@@ -20,17 +21,31 @@ import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 
 // ----------------------------------------------------------------------
+const columns = [
+  { field: 'userName', headerName: 'user', width: 150 },
+  { field: 'trangThai', headerName: 'Trạng thái', width: 200 },
+  { field: 'title', headerName: 'Lỗi', width: 300 },
+  { field: 'moiTruong', headerName: 'Môi trường', width: 300 },
+  { field: 'cachTaiHien', headerName: 'Cách tái hiện', width: 400 },
+  { field: 'ketQuaMongMuon', headerName: 'Kết quả mong muốn', width: 300 }
+];
 
-export default function Report({ type }) {
+export default function Report() {
+  const [rows, setRows] = useState([]);
+
   const LoginSchema = Yup.object().shape({
     title: Yup.string().required('Title is required'),
-    detail: Yup.string().required('Detail is required')
+    moiTruong: Yup.string().required('required'),
+    cachTaiHien: Yup.string().required('required'),
+    ketQuaMongMuon: Yup.string().required('required')
   });
 
   const formik = useFormik({
     initialValues: {
       title: '',
-      detail: ''
+      moiTruong: '',
+      cachTaiHien: '',
+      ketQuaMongMuon: ''
     },
     validationSchema: LoginSchema,
     onSubmit: (values, { setSubmitting }) => {
@@ -54,14 +69,17 @@ export default function Report({ type }) {
 
           await API.graphql(
             graphqlOperation(
-              `mutation MyMutation($customerID: ID!, $detail: String, $title: String) {
-                createReport(input: {customerID: $customerID, detail: $detail, title: $title}) {
+              `mutation MyMutation($ketQuaMongMuon: String, $moiTruong: String, $cachTaiHien: String, $reportCustomerId: ID, $title: String) {
+                createReport(input: {ketQuaMongMuon: $ketQuaMongMuon, moiTruong: $moiTruong, cachTaiHien: $cachTaiHien, reportCustomerId: $reportCustomerId, title: $title}) {
                   id
                 }
-              }`,
+              }
+              `,
               {
-                detail: values.detail,
-                customerID: test.data.listCustomers.items[0].id,
+                ketQuaMongMuon: values.ketQuaMongMuon,
+                moiTruong: values.moiTruong,
+                cachTaiHien: values.cachTaiHien,
+                reportCustomerId: test.data.listCustomers.items[0].id,
                 title: values.title
               }
             )
@@ -72,49 +90,114 @@ export default function Report({ type }) {
         };
 
         sent();
+        fetch();
       } catch (error) {
         console.log('Report', error);
       }
     }
   });
 
-  const { initialValues, isSubmitting, handleSubmit, getFieldProps, setFieldValue, setValues } =
-    formik;
+  const { initialValues, isSubmitting, handleSubmit, getFieldProps, values, setValues } = formik;
+
+  const fetch = async () => {
+    let rows = await API.graphql(
+      graphqlOperation(
+        `query MyQuery {
+        listReports {
+          items {
+            id
+            _deleted
+            cachTaiHien
+            ketQuaMongMuon
+            moiTruong
+            title
+            trangThai
+            Customer {
+              name
+            }
+          }
+        }
+      }
+    `
+      )
+    );
+    rows = rows.data.listReports.items.filter((x) => x.Customer !== null && x._deleted !== true);
+
+    setRows(
+      rows.map((x) => ({
+        ...x,
+        userName: x.Customer.name,
+        trangThai: x.trangThai === null ? 'Đang đợi' : x.trangThai
+      }))
+    );
+    console.log(rows);
+  };
+
+  useEffect(() => {
+    try {
+      fetch();
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
 
   return (
-    <Box display="flex" justifyContent="center">
-      <Box maxWidth="700px" width="100%">
-        <FormikProvider value={formik}>
-          <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
-            <Stack spacing={3} sx={{ my: 2 }}>
-              <Typography variant="h2" sx={{ mt: 3, textAlign: 'center' }}>
-                Report Bug
-              </Typography>
+    <>
+      <Box display="flex" justifyContent="center">
+        <Box maxWidth="700px" width="100%">
+          <FormikProvider value={formik}>
+            <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
+              <Stack spacing={3} sx={{ my: 2 }}>
+                <Typography variant="h2" sx={{ mt: 3, textAlign: 'center' }}>
+                  Report Bug
+                </Typography>
 
-              <TextField fullWidth label="Title" type="text" {...getFieldProps('title')} />
+                <TextField fullWidth label="Lỗi" type="text" {...getFieldProps('title')} />
 
-              <TextField
-                multiline
-                rows={6}
+                <TextField
+                  multiline
+                  rows={3}
+                  fullWidth
+                  label="Môi trường"
+                  type="text"
+                  {...getFieldProps('moiTruong')}
+                />
+
+                <TextField
+                  multiline
+                  rows={3}
+                  fullWidth
+                  label="Cách tái hiện"
+                  type="text"
+                  {...getFieldProps('cachTaiHien')}
+                />
+
+                <TextField
+                  multiline
+                  rows={3}
+                  fullWidth
+                  label="Kết quả mong muốn"
+                  type="text"
+                  {...getFieldProps('ketQuaMongMuon')}
+                />
+              </Stack>
+
+              <LoadingButton
                 fullWidth
-                label="Detail"
-                type="text"
-                {...getFieldProps('detail')}
-              />
-            </Stack>
-
-            <LoadingButton
-              fullWidth
-              size="large"
-              type="submit"
-              variant="contained"
-              loading={isSubmitting}
-            >
-              Report
-            </LoadingButton>
-          </Form>
-        </FormikProvider>
+                size="large"
+                type="submit"
+                variant="contained"
+                loading={isSubmitting}
+              >
+                Report
+              </LoadingButton>
+            </Form>
+          </FormikProvider>
+        </Box>
       </Box>
-    </Box>
+      <Box height="600px" width="100%" marginTop="20px" paddingX="30px">
+        <DataGrid rows={rows} columns={columns} disableSelectionOnClick />
+      </Box>
+    </>
   );
 }

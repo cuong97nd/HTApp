@@ -4,17 +4,17 @@ import { schema } from './schema';
 
 
 
-const { Report, NutritionStandard, WeightForReport, MotionForReport, Motion, FoodDeitalForReport, Food, MaterialDeitalForFood, Material, Customer } = initSchema(schema);
+const { Report, Customer, MotionForReport, Motion, FoodDeitalForReport, Food, MaterialDeitalForFood, Material, WeightForReport, NutritionStandard } = initSchema(schema);
 
 export {
   Report,
-  NutritionStandard,
-  WeightForReport,
+  Customer,
   MotionForReport,
   Motion,
   FoodDeitalForReport,
   Food,
   MaterialDeitalForFood,
   Material,
-  Customer
+  WeightForReport,
+  NutritionStandard
 };

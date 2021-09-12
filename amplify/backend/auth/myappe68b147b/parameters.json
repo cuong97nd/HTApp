@@ -20,14 +20,11 @@
     "requiredAttributes": [
         "email"
     ],
+    "aliasAttributes": [],
     "userpoolClientGenerateSecret": false,
     "userpoolClientRefreshTokenValidity": 30,
-    "userpoolClientWriteAttributes": [
-        "email"
-    ],
-    "userpoolClientReadAttributes": [
-        "email"
-    ],
+    "userpoolClientWriteAttributes": [],
+    "userpoolClientReadAttributes": [],
     "userpoolClientLambdaRole": "myappee68b147b_userpoolclient_lambda_role",
     "userpoolClientSetAttributes": false,
     "sharedId": "e68b147b",
@@ -45,18 +42,13 @@
             "Arn"
         ]
     },
-    "useDefault": "defaultSocial",
+    "useDefault": "default",
     "userPoolGroupList": [],
     "serviceName": "Cognito",
     "usernameCaseSensitive": false,
     "dependsOn": [],
-    "hostedUI": true,
-    "hostedUIDomainName": "myappa7db43f7-a7db43f7",
-    "authProvidersUserPool": [
-        "Facebook",
-        "Google"
-    ],
-    "hostedUIProviderMeta": "[{\"ProviderName\":\"Facebook\",\"authorize_scopes\":\"email,public_profile\",\"AttributeMapping\":{\"email\":\"email\",\"username\":\"id\"}},{\"ProviderName\":\"Google\",\"authorize_scopes\":\"openid email profile\",\"AttributeMapping\":{\"email\":\"email\",\"username\":\"sub\"}}]",
-    "oAuthMetadata": "{\"AllowedOAuthFlows\":[\"code\"],\"AllowedOAuthScopes\":[\"phone\",\"email\",\"openid\",\"profile\",\"aws.cognito.signin.user.admin\"],\"CallbackURLs\":[\"http://localhost:3000/\"],\"LogoutURLs\":[\"http://localhost:3000/\"]}",
+    "hostedUI": false,
+    "userPoolGroups": false,
+    "adminQueries": false,
     "authProviders": []
 }

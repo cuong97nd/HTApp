@@ -32,8 +32,6 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Add({ type }) {
   const classes = useStyles();
-  const navigate = useNavigate();
-  const [showPassword, setShowPassword] = useState(false);
   const [selectArray, setSelectArray] = useState([]);
 
   const LoginSchema = Yup.object().shape({
@@ -152,13 +150,14 @@ export default function Add({ type }) {
               items {
                 id
                 name
+                _deleted
               }
             }
           }
           `
           )
         );
-        setSelectArray(a.data.listFoods.items);
+        setSelectArray(a.data.listFoods.items.filter((x) => x._deleted !== true));
       };
 
       const initMotion = async () => {
@@ -169,13 +168,14 @@ export default function Add({ type }) {
               items {
                 id
                 name
+                _deleted
               }
             }
           }          
           `
           )
         );
-        setSelectArray(a.data.listMotions.items);
+        setSelectArray(a.data.listMotions.items.filter((x) => x._deleted !== true));
       };
 
       if (type === 'Food') {
